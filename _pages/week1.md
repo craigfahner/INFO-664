@@ -6,6 +6,8 @@ permalink: /week1/
 
 ## Week 1 activities
 
+* [Lecture Slides](https://docs.google.com/presentation/d/1_dROPalcxeGShn8LmguN24sIOZGDlrUaTPg90O1Qc2A/edit?usp=sharing)
+
 ### Syllabus!
 
 * [Course Syllabus](https://docs.google.com/document/d/13M7kuNMT2-TNKIzvb9lzHKbBsuPAL-0GbYelYs6oCa0/edit?usp=sharing)
