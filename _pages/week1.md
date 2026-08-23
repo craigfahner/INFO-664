@@ -16,8 +16,8 @@ permalink: /week1/
 
 ### Tech setup!
 
-* [GitHub Setup](./github-intro/)
-* [Environment Setup](./environment-setup/)
+* [GitHub Setup](../github-intro/)
+* [Environment Setup](../environment-setup/)
 
 ### Example data sources!
 
