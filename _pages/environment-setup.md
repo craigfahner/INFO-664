@@ -141,13 +141,11 @@ navigate (and easy to grade) all semester.
 
 ```
 INFO-664/
-├── .gitignore
-├── notebooks/
-│   ├── week01/
-│   │   └── week01.ipynb
-│   ├── week02/
-│   │   └── week02.ipynb
-│   └── template.ipynb       (starter notebook, copied each week)
+├── week01/
+│   └── week01.ipynb
+├── week02/
+│   └── week02.ipynb
+└── template.ipynb       (starter notebook, copied each week)
 └── data/
     └── (any local datasets, or a README noting where to download them)
 ```
