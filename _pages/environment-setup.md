@@ -142,7 +142,6 @@ navigate (and easy to grade) all semester.
 ```
 INFO-664/
 ├── .gitignore
-├── environment.yml          (optional, for reproducible setup)
 ├── notebooks/
 │   ├── week01/
 │   │   └── week01.ipynb
@@ -155,25 +154,6 @@ INFO-664/
 
 A flat `notebooks/week01.ipynb`, `notebooks/week02.ipynb`, ... pattern
 works fine too — pick one convention and keep it all semester.
-
-If you want other machines (or classmates) to be able to recreate your
-exact environment, add an `environment.yml` alongside the notebooks:
-
-```yaml
-name: INFO-664
-channels:
-  - conda-forge
-dependencies:
-  - python=3.12
-  - jupyterlab
-  - numpy
-  - pandas
-  - beautifulsoup4
-  - pip
-```
-
-Anyone can then set it up in one step with `conda env create -f environment.yml`
-instead of the manual `conda create`/`conda install` steps above.
 
 **A starter template worth creating once (`notebooks/template.ipynb`):**
 
@@ -234,11 +214,4 @@ looks the same at a glance, which makes review and grading much faster.
 **A couple of things worth considering:**
 
 - **Consistent naming** (`week03.ipynb`, not `week3_FINAL_v2.ipynb`)
-  makes work much easier to find later, for you and for anyone grading.
-- **One notebook per week**, not one giant notebook — keeps GitHub
-  Desktop's diff view and file sizes manageable.
-- Raw notebook files store cell outputs (including images) inline, which
-  can make diffs noisy. That's a reasonable trade-off for this course —
-  it means your pushed notebooks show rendered output without anyone
-  needing to re-run them — but if you'd rather keep diffs clean, the
-  `nbstripout` package can strip outputs automatically before each commit.
+- **One notebook per week**, not one giant notebook.
