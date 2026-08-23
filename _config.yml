@@ -1,12 +1,10 @@
 title: Craig's Python Scrapbook
 description: A GitHub Pages site generated from Markdown
-baseurl: ""   # leave empty for user/organization site
-url: "https://craigfahner.github.io/python-scrapbook"
 
 markdown: kramdown
-theme: minima   
+theme: minima
 url: "https://craigfahner.github.io"
-baseurl: "/python-scrapbook"
+baseurl: "/INFO-664"
 
 # Collections: optional, but lets you organize pages
 collections:
