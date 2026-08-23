@@ -4,6 +4,7 @@ title: INFO 664
 permalink: /
 ---
 
+* [GitHub Setup](./github-intro/)
 * [Environment Setup](./environment-setup/)
 * Intro to Python
     * [Part 1: Data types, arithmetic operators, variables](./part1/)

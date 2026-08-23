@@ -6,6 +6,11 @@ theme: minima
 url: "https://craigfahner.github.io"
 baseurl: "/INFO-664"
 
+# Controls which pages show up in the site's top nav heading.
+# Add paths (relative to the repo root) for any page you want listed there;
+# pages left out are still reachable by direct link, just not in the nav.
+header_pages: []
+
 # Collections: optional, but lets you organize pages
 collections:
   pages:
