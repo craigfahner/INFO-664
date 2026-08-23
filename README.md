@@ -1,6 +1,6 @@
 ---
 layout: home
-title: Craig's Python Notes
+title: INFO 664
 permalink: /
 ---
 
