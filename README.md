@@ -4,12 +4,17 @@ title: INFO 664
 permalink: /
 ---
 
+### Syllabus + Repo
+
+* [Course Syllabus](https://docs.google.com/document/d/13M7kuNMT2-TNKIzvb9lzHKbBsuPAL-0GbYelYs6oCa0/edit?usp=sharing)
+* [Code repository](https://github.com/craigfahner/INFO-664)
 * [GitHub Setup](./github-intro/)
 * [Environment Setup](./environment-setup/)
-* Intro to Python
-    * [Part 1: Data types, arithmetic operators, variables](./part1/)
-    * [Part 2: All about strings](./part2/)
-    * [Part 3: Collections](./part3/)
-    * [Part 4: Loops](./part4/)
-    * [Part 5: Conditionals](./part5/)
-    * [Part 6: Functions](./part6/)
+
+### Weekly notes
+
+* [Week 1](./week1/)
+
+* [GitHub Setup](./github-intro/)
+* [Environment Setup](./environment-setup/)
+
