@@ -6,11 +6,6 @@ permalink: /environment-setup/
 
 ## Environment Setup
 
-The examples so far have run right in the browser. Once we get into CSV
-parsing, JSON, working with APIs, and scraping with BeautifulSoup, we'll
-need a real local Python environment instead — this page covers getting
-that set up once, ahead of time.
-
 ### Installing Anaconda from the command line
 
 [Anaconda](https://www.anaconda.com/download) is a Python distribution
@@ -128,14 +123,14 @@ and run one at a time, in whatever order you like. There are two kinds:
 directly underneath that same cell. Move to the next cell for the next
 example, and so on down the notebook.
 
-**Save your work.** Ctrl+S saves the notebook file, including whatever
+**Save your work.** Ctrl+S/CMD+S saves the notebook file, including whatever
 output is currently displayed under each cell.
 
 ### Organizing your repo for weekly notebooks
 
 Once the environment is working, it's worth settling on a consistent
 place to put each week's notebook so your `INFO-664` repo stays easy to
-navigate (and easy to grade) all semester.
+navigate all semester.
 
 **Suggested structure:**
 
@@ -150,32 +145,15 @@ INFO-664/
     └── (any local datasets, or a README noting where to download them)
 ```
 
-A flat `notebooks/week01.ipynb`, `notebooks/week02.ipynb`, ... pattern
-works fine too — pick one convention and keep it all semester.
-
-**A starter template worth creating once (`notebooks/template.ipynb`):**
+**A starter template you can copy into each new weekly notebook (`template.ipynb`):**
 
 First cell (Markdown):
 ```markdown
 # Week __ — [Topic]
 **Name:**
 **Date:**
-
-## Goals for this notebook
 -
 ```
-
-Second cell (code) — a standard imports block so every week starts the
-same way:
-```python
-import pandas as pd
-import numpy as np
-from bs4 import BeautifulSoup
-import requests
-```
-
-Duplicating this template each week means every notebook in the repo
-looks the same at a glance, which makes review and grading much faster.
 
 **Weekly routine:**
 
