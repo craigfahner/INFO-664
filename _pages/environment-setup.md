@@ -66,14 +66,14 @@ conda install jupyterlab numpy pandas bs4
 
 Type `y` when prompted to confirm. That installs:
 
-- **jupyterlab** — the notebook interface we'll use to follow along
-- **numpy** — numerical arrays and math operations
-- **pandas** — tabular data (reading CSVs, working with rows/columns)
-- **bs4** (Beautiful Soup) — parsing HTML for web scraping
+- **jupyterlab**: the notebook interface we'll use to follow along
+- **numpy**: numerical arrays and math operations
+- **pandas**: tabular data (reading CSVs, working with rows/columns)
+- **bs4** (Beautiful Soup): parsing HTML for web scraping
 
-### Add a `.gitignore`
+### OPTIONAL: Add a `.gitignore`
 
-While you're set up, add a `.gitignore` to the repo so environment junk
+While you're set up, add a `.gitignore` to your repo folder so environment junk
 and notebook checkpoint files never get committed. In your `INFO-664`
 folder, create a plain text file named `.gitignore` (GitHub Desktop will
 pick it up automatically once it exists) containing:
@@ -83,10 +83,6 @@ pick it up automatically once it exists) containing:
 __pycache__/
 .DS_Store
 ```
-
-You don't need to ignore a `.venv` folder here, since conda environments
-live outside the repo by default — but double-check with `conda env list`
-that `INFO-664` isn't sitting inside your repo folder.
 
 ### Using JupyterLab to follow along
 

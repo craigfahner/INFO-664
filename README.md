@@ -11,6 +11,8 @@ permalink: /
 * [GitHub Setup](./github-intro/)
 * [Environment Setup](./environment-setup/)
 
+* [In-class Zoom Link](https://pratt.zoom.us/j/4957959638)
+
 ### Weekly notes
 
 * [Week 1](./week1/)
