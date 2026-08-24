@@ -37,8 +37,8 @@ permalink: /week1/
 
 ### Homework:
 
-1. Create a `Week 1` folder in your repo
-2. Create a `readme.md` file in the `Week 1` folder
+1. Create a `week01` folder in your repo
+2. Create a `readme.md` file in the `week01` folder
 3. Review the following resources about formatting text in Markdown:
   1. [Getting Started with Markdown](https://github.blog/developer-skills/github/github-for-beginners-getting-started-with-markdown/)
   2. [Markdown Cheat Sheet](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
@@ -48,5 +48,6 @@ permalink: /week1/
   * use the Markdown syntax for **heading** and **link** in your response (and more, if you like)
 5. Save your response to the readme.md file
 6. Commit and push your changes to your GitHub repo.
+7. Copy the link to the `week01` folder of your repo (on github.com) and submit it via Canvas. 
 
 
