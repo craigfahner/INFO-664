@@ -15,7 +15,7 @@ a tool for managing isolated environments.
 1. Download the command-line installer for your OS from
    [anaconda.com/download](https://www.anaconda.com/download) (choose the
    "Command Line Installer," not the graphical one). You can skip the registration prompt if it shows up.
-   [Use this link for Intel Mac installation!](Anaconda3-2025.06-1-MacOSX-x86_64.pkg)
+   [Use this link for Intel Mac installation!](https://repo.anaconda.com/archive/Anaconda3-2025.06-1-MacOSX-x86_64.pkg)
 2. Follow the instructions for a Command Line installation (CLI) for your operating system.
 
 3. Close and reopen your terminal so the changes take effect, then
