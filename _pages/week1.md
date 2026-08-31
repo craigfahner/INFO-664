@@ -33,7 +33,7 @@ permalink: /week1/
 * [Kaggle](https://www.kaggle.com/datasets?topic=trendingDataset)
 * Unstructured data from websites, books, other bodies of text
   * [Project Gutenburg](https://www.gutenberg.org/) - Archive of public domain books
-* etc!
+* etc! 
 
 ### Homework:
 
