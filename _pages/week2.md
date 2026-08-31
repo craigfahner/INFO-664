@@ -25,7 +25,7 @@ permalink: /week2/
 
 ### Homework part 3 (analog dataset)
 
-1. Look through the book [Dear Data](https://www.dear-data.com/theproject) and the website http://www.dear-data-two.com/ . Examine the kinds of personal data collected by the authors. What kinds of things are they keeping track of? Select 2 or 3 examples that you find interesting and describe them in 2-3 sentences each in a MarkDown cell in your notebook.
+1. Look through the book [Dear Data](https://www.dear-data.com/theproject) and the website [http://www.dear-data-two.com/](http://www.dear-data-two.com/) . Examine the kinds of personal data collected by the authors. What kinds of things are they keeping track of? Select 2 or 3 examples that you find interesting and describe them in 2-3 sentences each in a MarkDown cell in your notebook.
 2. Take 7 days and develop a personal data set based on a week in your own life. This could be anything that you can reasonably keep track of, so long as it’s something you’re comfortable sharing with the class. Examples of possible data sets include:
 - Cataloging time spent doing certain activities, such as:
   - Looking at your phone / spending time with certain apps
