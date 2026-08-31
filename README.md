@@ -29,10 +29,11 @@ permalink: /
 **End of class / as you work on notebooks outside of class**
 
 1. Save your notebook into a subfolder of your repo whose name corresponds with the given week. For example:
-
+```
 INFO-664/
 ├── week01/
 │   └── week01.ipynb
+```
 
 2. Go to GitHub desktop. First, summarize your changes in the "Summary" field - for instance `week 2 notebook added`. Then, press the "Commit to **main**" button. Finally, press the "Push origin" button, which will submit your changes to GitHub.
 
