@@ -45,7 +45,9 @@ INFO-664/
 
 ### Weekly notes
 
-* [Week 1](./week1/)
+* [Week 1: Introduction and environment setup](./week1/)
+* [Week 2: Python basics & working with strings](./week2/)
+
 
 * [GitHub Setup](./github-intro/)
 * [Environment Setup](./environment-setup/)
