@@ -27,34 +27,34 @@ permalink: /week2/
 
 1. Look through the book [Dear Data](https://www.dear-data.com/theproject) and the website http://www.dear-data-two.com/ . Examine the kinds of personal data collected by the authors. What kinds of things are they keeping track of? Select 2 or 3 examples that you find interesting and describe them in 2-3 sentences each in a MarkDown cell in your notebook.
 2. Take 7 days and develop a personal data set based on a week in your own life. This could be anything that you can reasonably keep track of, so long as it’s something you’re comfortable sharing with the class. Examples of possible data sets include:
-  - Cataloging time spent doing certain activities, such as:
-    - Looking at your phone / spending time with certain apps
-    - Sleeping
-    - Commuting
-    - Working / doing homework for classes
-    - Exercising
-    - etc
-  - Cataloging quantities of things:
-    - Things you’ve bought
-    - Things you’ve thrown away
-    - Money spent
-    - Shows / movies watched
-    - Steps taken
-    - People seen / spoken to
-    - Social media use (posts, likes, etc)
-    - etc
-  - Mapping spaces:
-    - Distance traveled / places visited
-    - Documenting commute
-    - Documenting how you use domestic / work space
-    - Mapping where the people you text / call are located
-    - Mapping where the things you buy come from
-    - etc
-  - Finding patterns and rhythms:
-    - Tracking color of clothing worn each day / in your wardrobe
-    - Songs listened to on repeat
-    - etc
-  - Consider combining these categories. For example: mapping the places where you listened to specific songs, or correlating two related data sets (comparing social media use to time spent on homework, for instance).
+- Cataloging time spent doing certain activities, such as:
+  - Looking at your phone / spending time with certain apps
+  - Sleeping
+  - Commuting
+  - Working / doing homework for classes
+  - Exercising
+  - etc
+- Cataloging quantities of things:
+  - Things you’ve bought
+  - Things you’ve thrown away
+  - Money spent
+  - Shows / movies watched
+  - Steps taken
+  - People seen / spoken to
+  - Social media use (posts, likes, etc)
+  - etc
+- Mapping spaces:
+  - Distance traveled / places visited
+  - Documenting commute
+  - Documenting how you use domestic / work space
+  - Mapping where the people you text / call are located
+  - Mapping where the things you buy come from
+  - etc
+- Finding patterns and rhythms:
+  - Tracking color of clothing worn each day / in your wardrobe
+  - Songs listened to on repeat
+  - etc
+- Consider combining these categories. For example: mapping the places where you listened to specific songs, or correlating two related data sets (comparing social media use to time spent on homework, for instance).
 
 3. Before you start, determine a simple system for keeping track of your chosen data set. This could be keeping a notebook or notes app, texting yourself (useful for keeping timestamps), or using an existing data collection system. If you are doing something based on location, use Google Maps or a GPS tracking software like Strava or RunGo. You may use the health app on your phone, or use social media data. Document all of the “raw data” you’ve collected in a Markdown cell in your notebook.
 
