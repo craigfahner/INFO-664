@@ -7,6 +7,8 @@ permalink: /week2/
 ## Week 2 activities
 
 * [Lecture Slides](https://docs.google.com/presentation/d/1DRwbbGr-zC9OaG1KP7NJ7Ye_HVU-D5f6-j3dDiR-5_g/edit?usp=sharing)
+* [Lecture notes Part 1: Basics](https://craigfahner.github.io/INFO-664/part1/)
+* [Lecture notes Part 2: Strings](https://craigfahner.github.io/INFO-664/part2/)
 * [Intro to Python Syntax (W3Schools)](https://www.w3schools.com/python/python_syntax.asp)
 * [Python Syntax Guide for Beginners (codeacademy)](https://www.codecademy.com/article/learn-python-python-syntax)
 
