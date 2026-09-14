@@ -185,6 +185,10 @@ temperatures.sort()
 print(temperatures)
 </script>
 
+`.sort` can also  order things in reverse, using the `reverse=True` argument:
+
+`temperatures.sort(reverse=True)`
+
 ### More list methods
 
 Starting from a daily routine, here's a walkthrough of six more list
@@ -549,3 +553,303 @@ print(mixed_keys)
 
 mixed_keys[[1, 2]] = "a list key"
 </script>
+
+### Sorting a list of dictionaries
+
+Let's look at a new dataset, exploring a common task when dealing with datasets: sorting by quantities.
+
+Say a birder finishes a walk through Central Park having recorded every
+bird they spotted, from the first one seen to the last. Each observation
+is a dictionary with four keys (`common_name`, `scientific_name`,
+`location`, and `count`), and the list holds them in observation order -
+so index `0` is the first bird, and the last index is the most recent:
+
+```python
+central_park_birds = [
+    {
+        "common_name": "Blue Jay",
+        "scientific_name": "Cyanocitta cristata",
+        "location": "The Ramble",
+        "count": 2,
+    },
+    {
+        "common_name": "Northern Cardinal",
+        "scientific_name": "Cardinalis cardinalis",
+        "location": "The Ramble",
+        "count": 1,
+    },
+    {
+        "common_name": "American Robin",
+        "scientific_name": "Turdus migratorius",
+        "location": "Great Lawn",
+        "count": 12,
+    },
+    {
+        "common_name": "Red-tailed Hawk",
+        "scientific_name": "Buteo jamaicensis",
+        "location": "Belvedere Castle",
+        "count": 1,
+    },
+    {
+        "common_name": "Mallard",
+        "scientific_name": "Anas platyrhynchos",
+        "location": "The Lake",
+        "count": 7,
+    },
+]
+
+print(central_park_birds)
+```
+
+<script type="py-editor">
+central_park_birds = [
+    {
+        "common_name": "Blue Jay",
+        "scientific_name": "Cyanocitta cristata",
+        "location": "The Ramble",
+        "count": 2,
+    },
+    {
+        "common_name": "Northern Cardinal",
+        "scientific_name": "Cardinalis cardinalis",
+        "location": "The Ramble",
+        "count": 1,
+    },
+    {
+        "common_name": "American Robin",
+        "scientific_name": "Turdus migratorius",
+        "location": "Great Lawn",
+        "count": 12,
+    },
+    {
+        "common_name": "Red-tailed Hawk",
+        "scientific_name": "Buteo jamaicensis",
+        "location": "Belvedere Castle",
+        "count": 1,
+    },
+    {
+        "common_name": "Mallard",
+        "scientific_name": "Anas platyrhynchos",
+        "location": "The Lake",
+        "count": 7,
+    },
+]
+
+print(central_park_birds)
+</script>
+
+Observation order isn't the only order that matters, though. Maybe what
+matters most is which birds showed up in the largest numbers. To reorder
+the list by `count`, use `sorted()`. Unlike `.sort()` (from earlier in
+this part, which rearranges a list **in place**), `sorted()` returns a
+brand-new list and leaves `central_park_birds` itself untouched.
+
+There's one catch: `sorted()` can't tell, on its own, which value inside
+each dictionary to compare. The `key` argument tells it what to sort by —
+you hand it a small helper that receives one item and returns the value to
+use. `key=lambda bird: bird["count"]` reads as "for each bird (a
+dictionary), sort by its `count`." (A `lambda` is just a short, unnamed
+function that, in this case, extracts the "count" field from the dataset – we will be exploring custom functions next week.)
+
+```python
+sorted_birds = sorted(central_park_birds, key=lambda bird: bird["count"])
+
+print(sorted_birds)
+```
+
+<script type="py-editor">
+central_park_birds = [
+    {
+        "common_name": "Blue Jay",
+        "scientific_name": "Cyanocitta cristata",
+        "location": "The Ramble",
+        "count": 2,
+    },
+    {
+        "common_name": "Northern Cardinal",
+        "scientific_name": "Cardinalis cardinalis",
+        "location": "The Ramble",
+        "count": 1,
+    },
+    {
+        "common_name": "American Robin",
+        "scientific_name": "Turdus migratorius",
+        "location": "Great Lawn",
+        "count": 12,
+    },
+    {
+        "common_name": "Red-tailed Hawk",
+        "scientific_name": "Buteo jamaicensis",
+        "location": "Belvedere Castle",
+        "count": 1,
+    },
+    {
+        "common_name": "Mallard",
+        "scientific_name": "Anas platyrhynchos",
+        "location": "The Lake",
+        "count": 7,
+    },
+]
+
+sorted_birds = sorted(central_park_birds, key=lambda bird: bird["count"])
+
+print(sorted_birds)
+</script>
+
+The birds now run from smallest `count` to largest. Note the two birds
+tied at `1` (the Northern Cardinal and the Red-tailed Hawk) keep their
+original relative order — Python's sort is *stable*, so equal items stay
+put. And because `sorted()` returned a new list, `central_park_birds`
+still holds the birds in the order they were observed.
+
+To list the most numerous birds first, add `reverse=True` to sort from
+largest `count` down to smallest:
+
+```python
+sorted_birds = sorted(central_park_birds, key=lambda bird: bird["count"], reverse=True)
+
+print(sorted_birds)
+```
+
+<script type="py-editor">
+central_park_birds = [
+    {
+        "common_name": "Blue Jay",
+        "scientific_name": "Cyanocitta cristata",
+        "location": "The Ramble",
+        "count": 2,
+    },
+    {
+        "common_name": "Northern Cardinal",
+        "scientific_name": "Cardinalis cardinalis",
+        "location": "The Ramble",
+        "count": 1,
+    },
+    {
+        "common_name": "American Robin",
+        "scientific_name": "Turdus migratorius",
+        "location": "Great Lawn",
+        "count": 12,
+    },
+    {
+        "common_name": "Red-tailed Hawk",
+        "scientific_name": "Buteo jamaicensis",
+        "location": "Belvedere Castle",
+        "count": 1,
+    },
+    {
+        "common_name": "Mallard",
+        "scientific_name": "Anas platyrhynchos",
+        "location": "The Lake",
+        "count": 7,
+    },
+]
+
+sorted_birds = sorted(central_park_birds, key=lambda bird: bird["count"], reverse=True)
+
+print(sorted_birds)
+</script>
+
+### Appending a dictionary to a list
+
+`central_park_birds` holds five sightings, in first-to-last order. Say the
+birder keeps walking and spots a sixth bird. The `.append()` method is
+already familiar — it added the string `"Cockatoo"` to the `birds` list in
+the "Adding an item to a list" section earlier in this part. The only new
+thing here is *what* gets appended: a whole dictionary instead of a single
+string. `.append()` doesn't care about the item's type — it always adds it
+onto the end of the list, so the new sighting takes the last position,
+right where the observation order says it belongs:
+
+```python
+central_park_birds = [
+    {
+        "common_name": "Blue Jay",
+        "scientific_name": "Cyanocitta cristata",
+        "location": "The Ramble",
+        "count": 2,
+    },
+    {
+        "common_name": "Northern Cardinal",
+        "scientific_name": "Cardinalis cardinalis",
+        "location": "The Ramble",
+        "count": 1,
+    },
+    {
+        "common_name": "American Robin",
+        "scientific_name": "Turdus migratorius",
+        "location": "Great Lawn",
+        "count": 12,
+    },
+    {
+        "common_name": "Red-tailed Hawk",
+        "scientific_name": "Buteo jamaicensis",
+        "location": "Belvedere Castle",
+        "count": 1,
+    },
+    {
+        "common_name": "Mallard",
+        "scientific_name": "Anas platyrhynchos",
+        "location": "The Lake",
+        "count": 7,
+    },
+]
+
+central_park_birds.append({
+    "common_name": "Rock Pigeon",
+    "scientific_name": "Columba livia",
+    "location": "Sheep Meadow",
+    "count": 9,
+})
+
+print(central_park_birds[-1])   # the newest sighting
+print(len(central_park_birds))  # total distinct sightings: 6
+```
+
+<script type="py-editor">
+central_park_birds = [
+    {
+        "common_name": "Blue Jay",
+        "scientific_name": "Cyanocitta cristata",
+        "location": "The Ramble",
+        "count": 2,
+    },
+    {
+        "common_name": "Northern Cardinal",
+        "scientific_name": "Cardinalis cardinalis",
+        "location": "The Ramble",
+        "count": 1,
+    },
+    {
+        "common_name": "American Robin",
+        "scientific_name": "Turdus migratorius",
+        "location": "Great Lawn",
+        "count": 12,
+    },
+    {
+        "common_name": "Red-tailed Hawk",
+        "scientific_name": "Buteo jamaicensis",
+        "location": "Belvedere Castle",
+        "count": 1,
+    },
+    {
+        "common_name": "Mallard",
+        "scientific_name": "Anas platyrhynchos",
+        "location": "The Lake",
+        "count": 7,
+    },
+]
+
+central_park_birds.append({
+    "common_name": "Rock Pigeon",
+    "scientific_name": "Columba livia",
+    "location": "Sheep Meadow",
+    "count": 9,
+})
+
+print(central_park_birds[-1])
+print(len(central_park_birds))
+</script>
+
+The new dictionary sits at index `5` — the sixth position — and the five
+sightings before it are left completely unchanged.
