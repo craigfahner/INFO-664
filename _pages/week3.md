@@ -11,6 +11,7 @@ permalink: /week3/
 * [Python lists and loops tutorial (Melanie Walsh)](https://melaniewalsh.github.io/Intro-Cultural-Analytics/02-Python/09-Lists-Loops-Part1.html)
 * [Python dictionaries tutorial (Melanie Walsh)](https://melaniewalsh.github.io/Intro-Cultural-Analytics/02-Python/11-Dictionaries.html)
 * [Advanced list sorting (python.org official docs)](https://docs.python.org/3/howto/sorting.html)
+* [Previous students' INFO-664 final projects (updated)](https://gofilipa.github.io/664-projects/)
 
 
 ### Homework: 
