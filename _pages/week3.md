@@ -28,9 +28,39 @@ bands = [
     ["John Phillips", "Michelle Phillips", "Cass Elliot", "Denny Doherty"],
 ]
 
-print(birds)
-print(leap_years)
-print(bands)
+beatles_albums = [
+    {
+        "album_title": "Please Please Me",
+        "release_date": "22 March 1963",
+        "running_time": "31:59",
+        "tracks": ["I Saw Her Standing There", "Misery", "Anna (Go to Him)",
+                   "Chains", "Boys", "Ask Me Why", "Please Please Me",
+                   "Love Me Do", "P.S. I Love You", "Baby It's You",
+                   "Do You Want to Know a Secret", "A Taste of Honey",
+                   "There's a Place", "Twist and Shout"],
+    },
+    {
+        "album_title": "With the Beatles",
+        "release_date": "22 November 1963",
+        "running_time": "33:07",
+        "tracks": ["It Won't Be Long", "All I've Got to Do", "All My Loving",
+                   "Don't Bother Me", "Little Child", "Till There Was You",
+                   "Please Mister Postman", "Roll Over Beethoven", "Hold Me Tight",
+                   "You Really Got a Hold on Me", "I Wanna Be Your Man",
+                   "Devil in Her Heart", "Not a Second Time",
+                   "Money (That's What I Want)"],
+    },
+    {
+        "album_title": "A Hard Day's Night",
+        "release_date": "10 July 1964",
+        "running_time": "30:09",
+        "tracks": ["A Hard Day's Night", "I Should Have Known Better", "If I Fell",
+                   "I'm Happy Just to Dance with You", "And I Love Her", "Tell Me Why",
+                   "Can't Buy Me Love", "Any Time at All", "I'll Cry Instead",
+                   "Things We Said Today", "When I Get Home", "You Can't Do That",
+                   "I'll Be Back"],
+    },
+]
 ```
 
 
