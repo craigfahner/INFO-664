@@ -61,6 +61,39 @@ beatles_albums = [
                    "I'll Be Back"],
     },
 ]
+
+central_park_birds = [
+    {
+        "common_name": "Blue Jay",
+        "scientific_name": "Cyanocitta cristata",
+        "location": "The Ramble",
+        "count": 2,
+    },
+    {
+        "common_name": "Northern Cardinal",
+        "scientific_name": "Cardinalis cardinalis",
+        "location": "The Ramble",
+        "count": 1,
+    },
+    {
+        "common_name": "American Robin",
+        "scientific_name": "Turdus migratorius",
+        "location": "Great Lawn",
+        "count": 12,
+    },
+    {
+        "common_name": "Red-tailed Hawk",
+        "scientific_name": "Buteo jamaicensis",
+        "location": "Belvedere Castle",
+        "count": 1,
+    },
+    {
+        "common_name": "Mallard",
+        "scientific_name": "Anas platyrhynchos",
+        "location": "The Lake",
+        "count": 7,
+    },
+]
 ```
 
 
