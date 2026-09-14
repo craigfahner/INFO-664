@@ -155,8 +155,7 @@ First cell (Markdown):
 **Weekly routine:**
 
 1. **Open GitHub Desktop**, make sure you're on the `INFO-664` repo
-   (top-left repo switcher), and click **Fetch origin** / **Pull origin**
-   to get any updated course materials.
+   (top-left repo switcher).
 2. **Launch JupyterLab from the command line**: open Anaconda Prompt
    (Windows) or Terminal (macOS/Linux), `cd` into your `INFO-664` folder
    if you're not already there, then run:
