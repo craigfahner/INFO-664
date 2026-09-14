@@ -12,6 +12,27 @@ permalink: /week3/
 * [Advanced list sorting (python.org official docs)](https://docs.python.org/3/howto/sorting.html)
 * [Previous students' INFO-664 final projects (updated)](https://gofilipa.github.io/664-projects/)
 
+### Copy-and-paste snippets
+
+copy and paste the below lists so you don't have to worry about typing them out during lecture!
+
+```
+birds = ["Robin", "Sparrow", "Blue Jay", "Cardinal", "Crow",
+         "Finch", "Owl", "Hawk", "Hummingbird", "Woodpecker"]
+
+leap_years = [2000, 2004, 2008, 2012, 2016, 2020, 2024]
+
+bands = [
+    ["John Lennon", "Paul McCartney", "George Harrison", "Ringo Starr"],
+    ["Mick Jagger", "Keith Richards", "Charlie Watts", "Ronnie Wood", "Bill Wyman"],
+    ["John Phillips", "Michelle Phillips", "Cass Elliot", "Denny Doherty"],
+]
+
+print(birds)
+print(leap_years)
+print(bands)
+```
+
 
 ### Homework: 
 
