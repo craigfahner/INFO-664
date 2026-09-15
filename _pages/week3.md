@@ -8,6 +8,7 @@ permalink: /week3/
 
 * [Lecture notes Part 3: Lists and Dictionaries](https://craigfahner.github.io/INFO-664/part3/)
 * [Lecture notes Part 4: Loops](https://craigfahner.github.io/INFO-664/part4/)
+* [In-class week 3 jupyter notebook](https://github.com/craigfahner/INFO-664/blob/main/week3/week3.ipynb)
 * [Python lists and loops tutorial (Melanie Walsh)](https://melaniewalsh.github.io/Intro-Cultural-Analytics/02-Python/09-Lists-Loops-Part1.html)
 * [Python dictionaries tutorial (Melanie Walsh)](https://melaniewalsh.github.io/Intro-Cultural-Analytics/02-Python/11-Dictionaries.html)
 * [Advanced list sorting (python.org official docs)](https://docs.python.org/3/howto/sorting.html)
