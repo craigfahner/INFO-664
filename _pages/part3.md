@@ -89,6 +89,30 @@ sentence = f"{band_member} was born in {leap_year} and their favorite bird is {b
 print(sentence)
 </script>
 
+*bonus*: try working with random numbers to generate index numbers:
+
+```
+import random
+bird_index = random.randint(0, len(birds)-1)
+# generates a random number between zero and the length of the birds array, minus one
+
+```
+
+### Searching for a value in a list
+
+You can use the `in` operator, as we did with strings, to find an item in a list:
+
+```
+albums = ["Abbey Road", "Revolver", "Let It Be"]
+"Revolver" in albums  # True
+```
+
+You can also use the `index` method to back-search for the index-position of a given item:
+
+`albums.index("Revolver")  # 1`
+
+
+
 ### Changing a value in a list
 
 Unlike strings — where every method we've used (`.upper()`, `.replace()`,

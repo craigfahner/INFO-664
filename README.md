@@ -48,7 +48,7 @@ INFO-664/
 
 * [Week 1: Introduction and environment setup](./week1/)
 * [Week 2: Python basics & working with strings](./week2/)
-* [Week 3: Lists, dictionaries, and loops](./week2/)
+* [Week 3: Lists, dictionaries, and loops](./week3/)
 
 
 * [GitHub Setup](./github-intro/)
