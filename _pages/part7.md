@@ -628,7 +628,8 @@ Micro Compact Car Smart GmbH, Renningen, Germany, and Hambach, France - 1994
 - **Not everyone in the results is a person.** The MoMA collection also
   includes design studios, architecture firms, and companies, and for
   those `BeginDate` holds the year the group was founded. That's why so
-  many of the results are firms and studios and not individuals.
+  many of the results are firms and studios and not individuals. We'll
+  filter those out next.
 
 <script type="py-editor" config='{"files": {"{{ csv_url }}": "./moma_artists.csv"}}'>
 import csv
@@ -651,3 +652,109 @@ for artist in recent_artists[:10]:
 
 Try changing the year, or change `>` to `<` to see the artists born
 before it. (Watch out for those `0` values, which would now all match!)
+
+### Filtering the filtered list: only people
+
+Our list of recent artists is full of studios and companies. The `Gender`
+column gives us a way to filter most of them out, since a group doesn't
+have a gender recorded, and its value is an empty string. We already have
+the list `recent_artists`, so we can filter that list further to make a
+new one, `recent_people`. The new loop keeps an artist only if their
+`Gender` contains `"male"`, `"female"`, or `"non-binary"`:
+
+```python
+recent_people = []
+
+for artist in recent_artists:
+    gender = artist["Gender"]
+    if "male" in gender or "female" in gender or "non-binary" in gender:
+        recent_people.append(artist)
+
+print(len(recent_people))
+
+for artist in recent_people:
+    print(artist["DisplayName"], "-", artist["BeginDate"], "-", artist["Gender"])
+```
+
+Which prints:
+
+```text
+23
+interware SARL - 2000 - male
+Max Weisel - 1991 - male
+Zack Khalil - 1991 - male
+Lucy Jones - 1991 - female
+Yara Said - 1991 - female
+Farah Al Qasimi - 1991 - female
+Kahlil Robert Irving - 1992 - male
+Louis Fratino - 1993 - male
+Nora Turato - 1991 - female
+Tyler Mitchell - 1995 - male
+Jibbe van Schie - 1998 - male
+Aria Dean - 1993 - female
+Tadáskía - 1993 - female (transwoman)
+Ji Jiawei - 1994 - male
+Liu Liyuan - 1997 - female
+Yuan Ruizhe - 1997 - female
+Ye Zichen - 1996 - male
+Arinjoy Sen - 1996 - male
+Silvia Rosi - 1992 - female
+Gabriel Fontana - 1993 - male
+Luther Konadu - 1991 - male
+Adam Vosburgh - 1994 - male
+César Béjar - 1992 - male
+```
+
+Out of 211 recent artists, only 23 are left. Some things to notice:
+
+- **The loop is over `recent_artists`, not `data`.** Each filter produces
+  a new list that we can feed into the next one, so the two conditions
+  (born after 1990, then has a gender) are applied one after the other.
+- **`in` works on strings too.** `"male" in gender` asks whether the text
+  `"male"` appears anywhere inside `gender` (see
+  [Part 2](../part2/)), and `or` (from [Part 5](../part5/)) means only one
+  of the three checks has to be `True`. An empty string contains none of
+  them, which is how the groups get left out.
+- **Why "contains" instead of `==`?** The `Gender` column isn't limited to
+  three tidy values: it also includes free-text entries like
+  `"female (transwoman)"`, which an exact match on `"female"` would miss.
+  Checking whether the value *contains* the word catches it.
+- **The `"female"` check is redundant.** The letters `male` appear inside
+  `female`, so `"male" in "female"` is `True`, and the first check already
+  catches everyone the second one does. We keep it in the code so it says
+  what we mean, but it's a good example of how substring matching can
+  surprise you. Try deleting it and running the code again to see that the
+  result doesn't change.
+- **The filter isn't perfect.** `interware SARL` is a company, but it has
+  `male` recorded as its gender, so it slipped through. And the reverse
+  also happens: an artist with no gender recorded, like `Dana Kavelina`,
+  gets left out even though they're a person. A blank value tells us the
+  gender wasn't recorded, and that's not always because it's a group.
+  When you filter real cultural data, expect to double check the results
+  by hand.
+
+<script type="py-editor" config='{"files": {"{{ csv_url }}": "./moma_artists.csv"}}'>
+import csv
+
+with open("moma_artists.csv", "r", encoding="utf-8") as file:
+    reader = csv.DictReader(file)
+    data = list(reader)
+
+recent_artists = []
+
+for artist in data:
+    if int(artist["BeginDate"]) > 1990:
+        recent_artists.append(artist)
+
+recent_people = []
+
+for artist in recent_artists:
+    gender = artist["Gender"]
+    if "male" in gender or "female" in gender or "non-binary" in gender:
+        recent_people.append(artist)
+
+print(len(recent_people))
+
+for artist in recent_people:
+    print(artist["DisplayName"], "-", artist["BeginDate"], "-", artist["Gender"])
+</script>
