@@ -11,3 +11,4 @@ permalink: /intro/
     * [Part 4: Loops](./part4/)
     * [Part 5: Conditionals](./part5/)
     * [Part 6: Functions](./part6/)
+    * [Part 7: Importing CSV data](./part7/)
