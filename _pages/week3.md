@@ -101,6 +101,6 @@ central_park_birds = [
 
 ### Homework: 
 
-1. Convert your dataset into a *list* or a *dictionary* (or, a *list of dictionaries*). If you are using dictionaries, be sure to use naming conventions for your keys that are related to the data represented, and use valid syntax. Print the contents of your dataset in your notebook.
+1. Convert the dataset you collected last week into a *list* or a *dictionary* (or, a *list of dictionaries*). If you are using dictionaries, be sure to use naming conventions for your keys that are related to the data represented, and use valid syntax. Print the contents of your dataset in your notebook.
 2. Using the `sorted()` function, generate two new lists that are sorted according to two different quantities in your data (for instance, if you've tracked step count and weather per day, sort by step count and sort by temperature). Print these sorted lists in your notebook.
 3. Record another day's worth of data. Use the `append()` function to add the additional data to the original dataset. Print the resulting appended dataset.
