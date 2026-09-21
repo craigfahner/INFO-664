@@ -97,11 +97,103 @@ print(header)
 print(first_row)
 </script>
 
+### A closer look at enumerate()
+
+Before we use it on the CSV data, let's look at what `enumerate()` does
+on its own. It takes a collection (a list, a tuple, a string, anything you
+could loop over) and pairs every item with its position:
+
+```python
+x = ('apple', 'banana', 'cherry')
+y = enumerate(x)
+
+print(list(y))  # print as list so it is readable, rather than as an "enumerate object"
+```
+
+Which prints:
+
+```text
+[(0, 'apple'), (1, 'banana'), (2, 'cherry')]
+```
+
+The result is a list of **tuples** (from [Part 3](../part3/)), and each
+tuple holds two things: the item's position first, then the item itself.
+The positions are the same **indexes** we use when we write `x[0]`, so
+they start counting at `0`, not `1`.
+
+The `list(y)` in the example is there for a reason. `enumerate()` doesn't
+hand back a list, it hands back an *enumerate object*, which produces its
+pairs one at a time as something asks for them. If we printed `y` directly
+we'd see something like `<enumerate object at 0x10511e6b0>` instead of
+the pairs. Wrapping it in `list()` asks for all of the pairs at once so we
+can read them. Like the CSV reader above, an enumerate object is used up as
+it's read, so a second `list(y)` on the same `y` would come back empty.
+
+<script type="py-editor">
+x = ('apple', 'banana', 'cherry')
+y = enumerate(x)
+
+print(y)
+print(list(y))
+</script>
+
+Most of the time we don't build a list at all. We hand `enumerate()`
+straight to a `for` loop (from [Part 4](../part4/)), which asks for one
+pair per pass. Since each pair is a tuple of two values, the loop can
+unpack it into two variables in one go, `index` and `fruit` here:
+
+```python
+x = ('apple', 'banana', 'cherry')
+
+for index, fruit in enumerate(x):
+    print(index, fruit)
+```
+
+Which prints:
+
+```text
+0 apple
+1 banana
+2 cherry
+```
+
+On the first pass `index` is `0` and `fruit` is `'apple'`; on the second,
+`1` and `'banana'`; and so on until the collection runs out. The variable
+names are up to you (`index, fruit` could just as well be `i, item`), but
+the order isn't: the position always comes first and the item second.
+
+<script type="py-editor">
+x = ('apple', 'banana', 'cherry')
+
+for index, fruit in enumerate(x):
+    print(index, fruit)
+</script>
+
+If you'd rather count from `1` (for a numbered list, say), `enumerate()`
+takes an optional `start` value:
+
+```python
+x = ('apple', 'banana', 'cherry')
+
+print(list(enumerate(x, start=1)))
+# [(1, 'apple'), (2, 'banana'), (3, 'cherry')]
+```
+
+<script type="py-editor">
+x = ('apple', 'banana', 'cherry')
+
+print(list(enumerate(x, start=1)))
+</script>
+
 ### Pulling values out of the row
 
 Since `first_row` is a list, we can index into it to get a single value,
-and `header` tells us which column each position belongs to. Looping over
-both with `enumerate` (from [Part 6](../part6/)) pairs them up:
+and `header` tells us which column each position belongs to. That's a
+good fit for `enumerate()`: looping over `header` gives us each column
+name along with its position, and that same position is the index of the
+matching value in `first_row`. Column `0` is `ConstituentID`, and the
+value at `first_row[0]` is its data; column `1` is `DisplayName`, whose
+data is at `first_row[1]`; and so on across the row:
 
 ```python
 import csv
@@ -120,6 +212,12 @@ birth_year = first_row[5]
 print(type(birth_year))   # <class 'str'>
 print(int(birth_year) + 1)
 ```
+
+The `for index, column_name in enumerate(header)` loop works just like
+the fruit example: on each pass `index` is the column's position and
+`column_name` is its name from the header. `first_row[index]` then grabs
+the value sitting at that same position in the data row, so the loop
+prints one `name = value` line per column.
 
 Every field comes back as a **string**, even ones that look like numbers.
 `first_row[5]` is `'1930'`, not `1930`, so `birth_year + 1` would fail
