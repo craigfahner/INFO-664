@@ -40,15 +40,19 @@ editors on this page load the file for you.
 
 Python's built-in `csv` module knows how to read CSV files, including
 tricky details like the quoted comma above. It isn't loaded automatically,
-so we bring it in with `import`:
+so we bring it in with `import`. The plan is to load the **entire file**
+into a single variable up front, and then work with that variable, the same
+way you would in a notebook:
 
 ```python
 import csv
 
-with open("moma_artists.csv", newline="", encoding="utf-8") as file:
+with open("moma_artists.csv", "r", encoding="utf-8") as file:
     reader = csv.reader(file)
-    header = next(reader)
-    first_row = next(reader)
+    data = list(reader)
+
+header = data[0]
+first_row = data[1]
 
 print(header)
 print(first_row)
@@ -59,23 +63,32 @@ piece:
 
 - **`import csv`** makes the `csv` module's tools available, under the
   name `csv`. The reader we want is `csv.reader`.
-- **`open("moma_artists.csv", ...)`** opens the file and hands back a
+- **`open("moma_artists.csv", "r", ...)`** opens the file and hands back a
   *file object*. Opening a file doesn't read anything yet; it just gets it
-  ready. `newline=""` and `encoding="utf-8"` are options we'll come back
-  to below.
+  ready. `"r"` and `encoding="utf-8"` are options we'll come back to
+  below.
 - **`with ... as file:`** runs the indented block below it while the file
   is open, and closes the file automatically when the block ends — even if
   something goes wrong inside. Like `for`, `if`, and `def`, it ends in a
   colon and its body is indented.
 - **`csv.reader(file)`** wraps the file object in a *reader*. The reader
-  splits each line into a list of fields.
-- **`next(reader)`** asks the reader for one row. The first call returns
-  the first line of the file (the header). Calling it again picks up where
-  it left off, so the second call returns the first row of actual data.
-  That's why `header` and `first_row` end up holding different rows.
+  splits each line into a list of fields, and hands them out one row at a
+  time.
+- **`list(reader)`** keeps asking the reader for rows until the file runs
+  out, and collects them all into one list, which we store in `data`. A
+  reader is used up once it has been read all the way through, so this is
+  our one chance to grab everything. That's why the loading happens inside
+  the `with` block, while the file is still open.
+- **`data`** is an ordinary variable, so it's still there after the `with`
+  block closes the file. Everything below this point works with `data`
+  and never has to touch the file again.
 
-Each row comes back as a list, so everything from
-[Part 3](../part3/) applies. Printing them gives:
+Each row is a list of fields, and `data` is a list of those rows, a **list
+of lists** (see [Part 3](../part3/)). That means we can pull out a row with
+an index number, the same way as any other list item. Indexes start at
+`0`, so `data[0]` is the first row in the file, which is the header of
+column names, and `data[1]` is the first row of actual data. Printing them
+gives:
 
 ```text
 ['ConstituentID', 'DisplayName', 'ArtistBio', 'Nationality', 'Gender', 'BeginDate', 'EndDate', 'Wiki QID', 'ULAN']
@@ -85,13 +98,19 @@ Each row comes back as a list, so everything from
 Notice that `'American, 1930–1992'` came through as a single value: the
 reader understood the quotes and kept the comma inside it.
 
+From here on, most of the code blocks in the text assume `data` has been
+loaded this way, and only show the new lines. The interactive editors repeat the
+loading code at the top so that each one can run on its own.
+
 <script type="py-editor" config='{"files": {"{{ csv_url }}": "./moma_artists.csv"}}'>
 import csv
 
-with open("moma_artists.csv", newline="", encoding="utf-8") as file:
+with open("moma_artists.csv", "r", encoding="utf-8") as file:
     reader = csv.reader(file)
-    header = next(reader)
-    first_row = next(reader)
+    data = list(reader)
+
+header = data[0]
+first_row = data[1]
 
 print(header)
 print(first_row)
@@ -196,12 +215,8 @@ value at `first_row[0]` is its data; column `1` is `DisplayName`, whose
 data is at `first_row[1]`; and so on across the row:
 
 ```python
-import csv
-
-with open("moma_artists.csv", newline="", encoding="utf-8") as file:
-    reader = csv.reader(file)
-    header = next(reader)
-    first_row = next(reader)
+header = data[0]
+first_row = data[1]
 
 print(first_row[1])   # Robert Arneson
 
@@ -229,10 +244,12 @@ remembering when we start cleaning data.
 <script type="py-editor" config='{"files": {"{{ csv_url }}": "./moma_artists.csv"}}'>
 import csv
 
-with open("moma_artists.csv", newline="", encoding="utf-8") as file:
+with open("moma_artists.csv", "r", encoding="utf-8") as file:
     reader = csv.reader(file)
-    header = next(reader)
-    first_row = next(reader)
+    data = list(reader)
+
+header = data[0]
+first_row = data[1]
 
 print(first_row[1])
 
@@ -250,25 +267,24 @@ Two options on `open()` matter for every CSV you read:
 
 | Option | What it does |
 | --- | --- |
-| `newline=""` | Turns off Python's own newline translation so the `csv` module can handle line endings itself. Without it, a quoted field that contains a line break (common in long museum descriptions) can be split into the wrong rows. The `csv` documentation recommends always including it. |
+| `"r"` | The **mode**: how the file is opened. `"r"` means *read* (text), and it's what `open()` does by default if you leave the mode out. Other modes include `"w"` (write a new file, replacing any existing one) and `"a"` (append to the end of one). |
 | `encoding="utf-8"` | Says how the bytes in the file map to characters. If you leave it out, Python uses your operating system's default, which differs between machines (often not UTF-8 on Windows). |
 
 Encoding is the one that quietly corrupts cultural data, because names and
 places are full of characters outside plain English text — the `–` in
 `1930–1992`, the `ü` in `Jüri Arrak`. If you pick the wrong encoding you
 either get a `UnicodeDecodeError` or, worse, no error but garbled text.
-Here's the same first row read as `latin-1`, an older encoding that
+Here's the same first row of data (`data[1]`) read as `latin-1`, an older encoding that
 assigns a different character to every byte:
 
 ```python
 import csv
 
-with open("moma_artists.csv", newline="", encoding="latin-1") as file:
+with open("moma_artists.csv", "r", encoding="latin-1") as file:
     reader = csv.reader(file)
-    header = next(reader)
-    first_row = next(reader)
+    data = list(reader)
 
-print(first_row)
+print(data[1])
 # [..., 'American, 1930â\x80\x931992', ...]
 ```
 
@@ -283,12 +299,11 @@ byte-order mark, or `"latin-1"` and `"cp1252"` for older exports.
 <script type="py-editor" config='{"files": {"{{ csv_url }}": "./moma_artists.csv"}}'>
 import csv
 
-with open("moma_artists.csv", newline="", encoding="latin-1") as file:
+with open("moma_artists.csv", "r", encoding="latin-1") as file:
     reader = csv.reader(file)
-    header = next(reader)
-    first_row = next(reader)
+    data = list(reader)
 
-print(first_row)
+print(data[1])
 </script>
 
 Try changing `"latin-1"` back to `"utf-8"` and running it again, then
@@ -312,114 +327,327 @@ the ones you'll see most often:
 | `strict` | `False` | If `True`, raises a `csv.Error` on badly formatted input instead of guessing. |
 | `dialect` | `"excel"` | A named bundle of all of the options above. `"excel-tab"` and `"unix"` are also built in. |
 
-You pass them after the file object, by name. Here are a few of them
-doing their work on the first row of `moma_artists.csv`.
 
-**`delimiter`.** If the delimiter doesn't match the file, the reader can't
-find any field boundaries and returns each line as one long string. The
-file uses commas, so asking for semicolons gets us nothing useful:
+### Reading the whole file and picking a random row
+
+The examples above loaded the whole file into `data` with `list(reader)`.
+This one does the same thing, but first takes the header off with
+`next(reader)`, which asks the reader for a single row (the next one it
+hasn't handed out yet) and returns it. Everything left over then goes into
+`rows`, so `rows` holds just the artists: a **list of lists** (see
+[Part 3](../part3/)), one inner list per artist.
+
+Once we have that list, picking a random row is the same trick as the
+bonus example in [Part 3](../part3/). `random.randint(a, b)` gives back a
+random whole number from `a` up to *and including* `b`, so we ask for a
+number between `0` and `len(rows) - 1` (the last valid index) and use it
+to pull one row out of `rows`:
+
+```python
+import csv
+import random
+
+with open("moma_artists.csv", "r", encoding="utf-8") as file:
+    reader = csv.reader(file)
+    header = next(reader)
+    rows = list(reader)
+
+print(len(rows))   # how many artists are in the file
+
+random_index = random.randint(0, len(rows) - 1)
+random_row = rows[random_index]
+
+print("Row", random_index)
+for index, column_name in enumerate(header):
+    print(column_name, "=", random_row[index])
+```
+
+Some things to notice in this one:
+
+- **`rows = list(reader)`** reads everything left in the file. Because
+  `header = next(reader)` already used up the first line, `rows` doesn't
+  include the header, so `rows[0]` is the first *artist*, not the column
+  names.
+- **The data lives on after the `with` block.** The file is closed
+  automatically once the indented block ends, but `header` and `rows` are
+  ordinary variables that hold copies of the data, so we can keep using
+  them below. That's why all the reading happens inside the `with` and all
+  the picking and printing happens outside of it.
+- **`len(rows) - 1`** matters because `randint` includes its upper bound
+  and list indexes start at `0`. Asking for `randint(0, len(rows))` would
+  occasionally produce an index one past the end of the list and raise an
+  `IndexError`.
+- **The loop is the one from earlier.** `enumerate(header)` supplies each
+  column name and its position, and `random_row[index]` supplies the
+  matching value. Run it a few times: some artists have a full set of
+  values, while others have empty `Wiki QID` and `ULAN` fields, or a
+  `BeginDate` or `EndDate` of `0`, which in this file means "unknown or
+  still living."
+
+<script type="py-editor" config='{"files": {"{{ csv_url }}": "./moma_artists.csv"}}'>
+import csv
+import random
+
+with open("moma_artists.csv", "r", encoding="utf-8") as file:
+    reader = csv.reader(file)
+    header = next(reader)
+    rows = list(reader)
+
+print(len(rows))
+
+random_index = random.randint(0, len(rows) - 1)
+random_row = rows[random_index]
+
+print("Row", random_index)
+for index, column_name in enumerate(header):
+    print(column_name, "=", random_row[index])
+</script>
+
+Press the run button again to get a different artist each time.
+
+`random.choice()` is a shortcut for the two lines that pick the row. It
+takes any list and returns one random item from it, with no index math
+needed:
+
+```python
+random_row = random.choice(rows)
+```
+
+### Reading rows as dictionaries with DictReader
+
+`csv.reader` gives us each row as a list, so we have to remember which
+position belongs to which column: `first_row[5]` is the birth year, but
+nothing in the code says so. `csv.DictReader` solves this. It reads the
+header row for us and uses those column names as **keys**, so every row
+comes back as a **dictionary** (see [Part 3](../part3/)) instead of a list.
+
+Here is the same idea as our first example, with two differences. We use
+`csv.DictReader` in place of `csv.reader`, and this time we'll look at the
+**last** item in the list instead of the first:
 
 ```python
 import csv
 
-with open("moma_artists.csv", newline="", encoding="utf-8") as file:
-    reader = csv.reader(file, delimiter=";")
-    header = next(reader)
+with open("moma_artists.csv", "r", encoding="utf-8") as file:
+    reader = csv.DictReader(file)
+    data = list(reader)
 
-print(header)
-# ['ConstituentID,DisplayName,ArtistBio,Nationality,Gender,BeginDate,EndDate,Wiki QID,ULAN']
-print(len(header))   # 1
+last_row = data[-1]
+
+print(last_row)
+
+for key, value in last_row.items():
+    print(key, "=", value)
 ```
 
-A one-item list where you expected nine columns is the classic sign of the
-wrong delimiter.
+Which prints:
+
+```text
+{'ConstituentID': '140918', 'DisplayName': 'John Wallace', 'ArtistBio': 'American, 1929 – 2011', 'Nationality': 'American', 'Gender': 'male', 'BeginDate': '1929', 'EndDate': '2011', 'Wiki QID': '', 'ULAN': ''}
+ConstituentID = 140918
+DisplayName = John Wallace
+ArtistBio = American, 1929 – 2011
+Nationality = American
+Gender = male
+BeginDate = 1929
+EndDate = 2011
+Wiki QID = 
+ULAN = 
+```
+
+What's different from the `csv.reader` version:
+
+- **`csv.DictReader(file)`** takes the same file object as `csv.reader`,
+  and `list(reader)` collects the rows the same way. It also accepts the
+  same options (`delimiter`, `quotechar`, and so on), plus a `fieldnames`
+  option for supplying your own column names when a file has no header row.
+- **The header is no longer part of the data.** `DictReader` uses the first
+  line of the file as the keys, so it isn't returned as a row. That means
+  `data[0]` is the first artist, and there is no separate `header` variable
+  to keep track of.
+- **`data[-1]` is the last item.** A negative index counts backwards from
+  the end of the list, so `-1` is the last item, `-2` is the second to
+  last, and so on (as in [Part 3](../part3/)). It's handy here because we
+  don't need to know how many rows the file has.
+- **`.items()`** gives every key in a dictionary along with its value, as
+  a `(key, value)` pair. It works just like `enumerate()`, which paired
+  each item with its position: the `for` loop unpacks each pair into two
+  variables, here `key` and `value`. So we get a `name = value` line for
+  every column without needing `header` or index numbers at all.
+- **Values are still strings.** `'1929'` is text, not a number, just like
+  with `csv.reader`.
+
+The biggest benefit is that we can now ask for a value by column name.
+`last_row["DisplayName"]` is much easier to read than `last_row[1]`, and it
+keeps working even if the columns are reordered:
+
+```python
+print(last_row["DisplayName"])   # John Wallace
+print(last_row["Wiki QID"])      # (empty: this artist has no Wiki QID)
+```
 
 <script type="py-editor" config='{"files": {"{{ csv_url }}": "./moma_artists.csv"}}'>
 import csv
 
-with open("moma_artists.csv", newline="", encoding="utf-8") as file:
-    reader = csv.reader(file, delimiter=";")
-    header = next(reader)
+with open("moma_artists.csv", "r", encoding="utf-8") as file:
+    reader = csv.DictReader(file)
+    data = list(reader)
 
-print(header)
-print(len(header))
+last_row = data[-1]
+
+print(last_row)
+
+for key, value in last_row.items():
+    print(key, "=", value)
+
+print(last_row["DisplayName"])
+print(last_row["Wiki QID"])
 </script>
 
-**`quoting`.** With `csv.QUOTE_NONE` the reader stops treating quote
-characters as special, so the comma inside the artist's bio is treated as
-a separator like any other. The bio gets split in two, its quote marks
-stay attached, and the row grows from nine fields to ten:
+### Filtering by nationality
+
+Since every row is a dictionary, we can check a single column of every
+artist without counting positions. This uses the filtering pattern from
+[Part 5](../part5/): loop over the list, use an `if` to test each item,
+and `.append()` the ones that pass onto a new list. Here we keep only the
+artists whose `Nationality` is `"Swedish"`:
 
 ```python
-import csv
+swedish_artists = []
 
-with open("moma_artists.csv", newline="", encoding="utf-8") as file:
-    reader = csv.reader(file, quoting=csv.QUOTE_NONE)
-    header = next(reader)
-    first_row = next(reader)
+for artist in data:
+    if artist["Nationality"] == "Swedish":
+        swedish_artists.append(artist)
 
-print(first_row)
-# ['1', 'Robert Arneson', '"American', ' 1930–1992"', 'American', 'male', '1930', '1992', '', '']
-print(len(first_row))   # 10
+print(len(swedish_artists))
+
+for artist in swedish_artists[:10]:
+    print(artist["DisplayName"], "-", artist["ArtistBio"])
 ```
 
-This is exactly the problem that quoting exists to solve, and it's why you
-should almost never split CSV lines by hand with `.split(",")` (as in
-[Part 2](../part2/)) once your data has commas in it.
+Which prints:
+
+```text
+131
+Folke Arstrom - Swedish, 1907–1997
+Göran Åslin - Swedish, born 1940
+Erik Gunnar Asplund - Swedish, 1885–1940
+Monika Andersson - Swedish, born 1957
+Olof Backman - Swedish, born 1899
+Olle Baertling - Swedish, 1911–1981
+Hagbard Elis Bergh - Swedish, 1881–1954
+Håkan Bergkvist - Swedish, born 1946
+Bengt Böckman - Swedish, born 1936
+Carl-Arne Breger - Swedish, born 1923
+```
+
+A few things to notice:
+
+- **The column is `Nationality`, not a birth country.** This file doesn't
+  have a birth country column. The value we're matching is the nationality
+  MoMA has recorded, which is `"Swedish"` and not `"Sweden"`, and it can
+  differ from where someone was actually born. (Some `ArtistBio` values do
+  mention a birthplace, like `"American, born Germany"`, but not in a
+  consistent format we can filter on directly.) Some artists have no
+  nationality at all, so their value is an empty string, and they won't
+  match.
+- **`==` has to match exactly**, including capital letters, so
+  `"swedish"` wouldn't match `"Swedish"`.
+- **`swedish_artists[:10]`** is a slice of the list (as in
+  [Part 2](../part2/), slicing works on lists just like it does on
+  strings), giving just the first 10 items. That keeps the output short.
+  Remove `[:10]` to print all of them, and `len(swedish_artists)` above
+  tells you how many there are in total.
 
 <script type="py-editor" config='{"files": {"{{ csv_url }}": "./moma_artists.csv"}}'>
 import csv
 
-with open("moma_artists.csv", newline="", encoding="utf-8") as file:
-    reader = csv.reader(file, quoting=csv.QUOTE_NONE)
-    header = next(reader)
-    first_row = next(reader)
+with open("moma_artists.csv", "r", encoding="utf-8") as file:
+    reader = csv.DictReader(file)
+    data = list(reader)
 
-print(first_row)
-print(len(first_row))
+swedish_artists = []
+
+for artist in data:
+    if artist["Nationality"] == "Swedish":
+        swedish_artists.append(artist)
+
+print(len(swedish_artists))
+
+for artist in swedish_artists[:10]:
+    print(artist["DisplayName"], "-", artist["ArtistBio"])
 </script>
 
-**`delimiter` and `skipinitialspace` on text that isn't in a file.**
-`csv.reader` doesn't actually need a file. It accepts anything that hands
-it one line of text at a time, including a plain list of strings. That
-makes it easy to test an option on a small sample before pointing it at a
-big file:
+Try changing `"Swedish"` to another nationality, like `"Finnish"` or
+`"Japanese"`, and running it again.
+
+### Filtering by birth year
+
+Filtering on a number works the same way, with one extra step. Every
+value from the CSV is a string, and Python can't compare a string like
+`"1993"` to the number `1990`: it raises a `TypeError`. We convert the
+`BeginDate` with `int()` first (see
+[Part 1](../part1/)), then compare it with `>`:
 
 ```python
-import csv
+recent_artists = []
 
-lines = ["1, Robert Arneson, American"]
+for artist in data:
+    if int(artist["BeginDate"]) > 1990:
+        recent_artists.append(artist)
 
-print(next(csv.reader(lines)))
-# ['1', ' Robert Arneson', ' American']
+print(len(recent_artists))
 
-print(next(csv.reader(lines, skipinitialspace=True)))
-# ['1', 'Robert Arneson', 'American']
-
-pipe_lines = ["1|Robert Arneson|American"]
-
-print(next(csv.reader(pipe_lines, delimiter="|")))
-# ['1', 'Robert Arneson', 'American']
+for artist in recent_artists[:10]:
+    print(artist["DisplayName"], "-", artist["BeginDate"])
 ```
 
-By default the leading space after each comma stays attached to the value;
-`skipinitialspace=True` trims it. The pipe example shows `delimiter`
-working properly, on a line that really is separated by `|`.
+Which prints:
 
-<script type="py-editor">
+```text
+211
+K2 Design Studio - 1993
+Cyan - 1992
+Studio Boot - 1992
+Una - 1992
+interware SARL - 2000
+IDEO - 1991
+Acordis Industrial Fibers, The Netherlands - 1999
+SHoP Architects PC - 1996
+Pandora Design - 1998
+Micro Compact Car Smart GmbH, Renningen, Germany, and Hambach, France - 1994
+```
+
+- **`int(artist["BeginDate"])`** does the conversion for each artist as the
+  loop reaches them. It works here because every `BeginDate` in this file
+  is made of digits. If a column had blanks, `int("")` would raise a
+  `ValueError`, and we'd need to check for that first.
+- **Artists with a `BeginDate` of `0` are left out automatically.** In
+  this file `0` means "unknown," and `0 > 1990` is `False`, so those rows
+  never get added.
+- **Not everyone in the results is a person.** The MoMA collection also
+  includes design studios, architecture firms, and companies, and for
+  those `BeginDate` holds the year the group was founded. That's why so
+  many of the results are firms and studios and not individuals.
+
+<script type="py-editor" config='{"files": {"{{ csv_url }}": "./moma_artists.csv"}}'>
 import csv
 
-lines = ["1, Robert Arneson, American"]
+with open("moma_artists.csv", "r", encoding="utf-8") as file:
+    reader = csv.DictReader(file)
+    data = list(reader)
 
-print(next(csv.reader(lines)))
-print(next(csv.reader(lines, skipinitialspace=True)))
+recent_artists = []
 
-pipe_lines = ["1|Robert Arneson|American"]
+for artist in data:
+    if int(artist["BeginDate"]) > 1990:
+        recent_artists.append(artist)
 
-print(next(csv.reader(pipe_lines, delimiter="|")))
+print(len(recent_artists))
+
+for artist in recent_artists[:10]:
+    print(artist["DisplayName"], "-", artist["BeginDate"])
 </script>
 
-The reader object also keeps track of where it is: after the two `next()`
-calls in our first example, `reader.line_num` would be `2`. That number
-comes in handy for error messages ("problem on line 5,412") once we start
-looping through the whole file.
+Try changing the year, or change `>` to `<` to see the artists born
+before it. (Watch out for those `0` values, which would now all match!)
