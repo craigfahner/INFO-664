@@ -6,6 +6,11 @@ permalink: /week4/
 
 ## Week 4 activities
 
+* [Lecture notes Part 4: Loops](https://craigfahner.github.io/INFO-664/part4/)
+* [Lecture notes Part 5: Conditionals](https://craigfahner.github.io/INFO-664/part5/)
+* [Lecture notes Part 6: Function Declarations](https://craigfahner.github.io/INFO-664/part6/)
+* [Lecture notes Part 7: CSV parsing](https://craigfahner.github.io/INFO-664/part7/)
+* [In-class week 4 jupyter notebook](https://github.com/craigfahner/INFO-664/blob/main/week4/week4.ipynb)
 * [Another CSV parsing example from Filipa Calado's section](https://gofilipa.github.io/664/csv/)
 * [Logic tutorial from Filipa Calado's 664 section](https://gofilipa.github.io/664/logic/)
 * [Custom functions tutorial (Melanie Walsh)](https://melaniewalsh.github.io/Intro-Cultural-Analytics/02-Python/12-Functions.html)
