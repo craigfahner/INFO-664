@@ -9,6 +9,7 @@ permalink: /week5/
 * Where we're headed
     * JSON
     * APIs
+    * [Regular Expressions](https://www.w3schools.com/python/python_regex.asp) - finding patterns in strings
     * [Web scraping](https://beautiful-soup-4.readthedocs.io/en/latest/)
     * [Pandas](https://pandas.pydata.org/) - data analysis library [(more info)](https://medium.com/learning-data/a-gentle-introduction-to-pythons-pandas-library-the-first-5-functions-you-need-to-know-fc045e24f3c8)
     * Image analysis
