@@ -270,3 +270,155 @@ print(f"There are {other_count} artists with another gender recorded in the MoMA
   `len(artists_with_gender)`, or format the big numbers with commas using
   `{male_count:,}` inside the f-string, or repeat the count for another
   column, like `Nationality`.
+
+---
+
+## Part 8 challenge: ranking countries by artist count
+
+In the previous challenge we counted artists by gender. Now we'll count how
+many artists come from each country, and rank them from most to least
+represented.
+
+### The challenge
+
+1. Load the whole CSV as a list of dictionaries (same as before).
+2. Filter out rows where the `Nationality` field is empty.
+3. Build a dictionary that maps each country name to its count of artists.
+4. Sort the dictionary by count in descending order and print the top 10.
+
+Give it a try before scrolling down. Here's an editor with the loading code
+already filled in:
+
+<script type="py-editor" config='{"files": {"{{ csv_url }}": "./moma_artists.csv"}}'>
+import csv
+
+with open("moma_artists.csv", "r", encoding="utf-8") as file:
+    reader = csv.DictReader(file)
+    data = list(reader)
+
+# your code here
+</script>
+
+### Step 1: filter out the empty nationalities
+
+Just like with gender, we drop rows where `Nationality` is blank:
+
+```python
+artists_with_nationality = []
+
+for artist in data:
+    if artist["Nationality"] != "":
+        artists_with_nationality.append(artist)
+
+print(len(artists_with_nationality))
+```
+
+```text
+11538
+```
+
+### Step 2: count artists per country
+
+We use a dictionary to accumulate counts. The pattern is: check if the key
+exists, and either increment it or initialize it to `1`:
+
+```python
+country_counts = {}
+
+for artist in artists_with_nationality:
+    country = artist["Nationality"]
+
+    if country in country_counts:
+        country_counts[country] += 1
+    else:
+        country_counts[country] = 1
+
+print(len(country_counts))
+```
+
+```text
+190
+```
+
+Out of 11,538 artists with a recorded nationality, they fall into 190
+different country entries (note: some artists have compound entries like
+`"British, American"`, which get counted as a single string).
+
+### Step 3: sort and print the top 10
+
+Python's built-in `sorted()` function can sort dictionary items by their
+values. We pass `reverse=True` so highest counts come first, then slice the
+first 10 results:
+
+```python
+ranked = sorted(country_counts.items(), key=lambda x: x[1], reverse=True)
+
+for country, count in ranked[:10]:
+    print(f"{country}: {count:,} artists")
+```
+
+```text
+United States: 2,045 artists
+France: 817 artists
+Germany: 634 artists
+United Kingdom: 452 artists
+Spain: 294 artists
+Italy: 268 artists
+Japan: 183 artists
+Netherlands: 169 artists
+Switzerland: 145 artists
+Mexico: 142 artists
+```
+
+We use `.items()` to get key-value pairs, and `x[1]` tells Python to sort
+by the value (the count) rather than the key (the country name). The `:,`
+inside the f-string formats numbers with commas.
+
+Here's everything together:
+
+<script type="py-editor" config='{"files": {"{{ csv_url }}": "./moma_artists.csv"}}'>
+import csv
+
+with open("moma_artists.csv", "r", encoding="utf-8") as file:
+    reader = csv.DictReader(file)
+    data = list(reader)
+
+artists_with_nationality = []
+
+for artist in data:
+    if artist["Nationality"] != "":
+        artists_with_nationality.append(artist)
+
+country_counts = {}
+
+for artist in artists_with_nationality:
+    country = artist["Nationality"]
+
+    if country in country_counts:
+        country_counts[country] += 1
+    else:
+        country_counts[country] = 1
+
+ranked = sorted(country_counts.items(), key=lambda x: x[1], reverse=True)
+
+print(f"Total countries: {len(country_counts)}")
+
+print("\nTop 10:")
+for country, count in ranked[:10]:
+    print(f"{country}: {count:,} artists")
+
+total = len(artists_with_nationality)
+print(f"\nTop 10 represent {(sum(c for _, c in ranked[:10]) / total * 100):.1f}% of all artists with recorded nationality.")
+</script>
+
+### Things to think about
+
+- **Compound nationalities:** An artist listed as `"British, American"` gets
+  counted under that exact string, not under Britain or the United States.
+  A different way to split and count those entries would produce a different
+  ranking.
+- **What about the missing ones?** About 4,000+ rows have no nationality
+  recorded at all. Those artists are invisible in this ranking.
+- **Going further:** try modifying the code to print the bottom 10 countries
+  instead, or add a line that shows what percentage of all artists each
+  country represents.
