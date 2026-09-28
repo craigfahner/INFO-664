@@ -6,6 +6,11 @@ permalink: /week4/
 
 ## Week 4 activities
 
+* [Lecture notes Part 4: Loops](https://craigfahner.github.io/INFO-664/part4/)
+* [Lecture notes Part 5: Conditionals](https://craigfahner.github.io/INFO-664/part5/)
+* [Lecture notes Part 6: Function Declarations](https://craigfahner.github.io/INFO-664/part6/)
+* [Lecture notes Part 7: CSV parsing](https://craigfahner.github.io/INFO-664/part7/)
+* [In-class week 4 jupyter notebook](https://github.com/craigfahner/INFO-664/blob/main/week4/week4.ipynb)
 * [Another CSV parsing example from Filipa Calado's section](https://gofilipa.github.io/664/csv/)
 * [Logic tutorial from Filipa Calado's 664 section](https://gofilipa.github.io/664/logic/)
 * [Custom functions tutorial (Melanie Walsh)](https://melaniewalsh.github.io/Intro-Cultural-Analytics/02-Python/12-Functions.html)
@@ -22,7 +27,6 @@ beatles_albums = [
         "album_title": "Please Please Me",
         "release_date": "22 March 1963",
         "running_time": "31:59",
-        "running_time_in_seconds": 1919,
         "tracks": ["I Saw Her Standing There", "Misery", "Anna (Go to Him)",
                    "Chains", "Boys", "Ask Me Why", "Please Please Me",
                    "Love Me Do", "P.S. I Love You", "Baby It's You",
@@ -33,7 +37,6 @@ beatles_albums = [
         "album_title": "With the Beatles",
         "release_date": "22 November 1963",
         "running_time": "33:07",
-        "running_time_in_seconds": 1987,
         "tracks": ["It Won't Be Long", "All I've Got to Do", "All My Loving",
                    "Don't Bother Me", "Little Child", "Till There Was You",
                    "Please Mister Postman", "Roll Over Beethoven", "Hold Me Tight",
@@ -45,7 +48,6 @@ beatles_albums = [
         "album_title": "A Hard Day's Night",
         "release_date": "10 July 1964",
         "running_time": "30:09",
-        "running_time_in_seconds": 1809,
         "tracks": ["A Hard Day's Night", "I Should Have Known Better", "If I Fell",
                    "I'm Happy Just to Dance with You", "And I Love Her", "Tell Me Why",
                    "Can't Buy Me Love", "Any Time at All", "I'll Cry Instead",
