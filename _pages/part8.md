@@ -512,8 +512,7 @@ Everything you need has already been covered somewhere in this course.
 For step 2, think about the `if` / `else` and `in` patterns from
 [Part 5](../part5/) and [Part 1](../part1/) — for each artist, is their
 birth year already a key in your dictionary or not? For step 3, `sorted()`
-takes a `lambda` key, the same way it did earlier in this part — it just
-doesn't have to be sorting a list of dictionaries. 
+takes a `lambda` key, which we covered in [week 3](https://craigfahner.github.io/INFO-664/part3/).
 
 <script type="py-editor" config='{"files": {"{{ csv_url }}": "./moma_artists.csv"}}'>
 import csv
