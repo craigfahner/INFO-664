@@ -23,6 +23,23 @@ We will use the [MoMA dataset](https://github.com/craigfahner/INFO-664/blob/main
 
 ### In-class coding challenge
 
+MoMA's artists were born across hundreds of years. Which birth years show up the most often in the collection?
+
+Write code that:
+
+1. Loads the whole dataset (you know how to do this already).
+2. Builds a dictionary that counts how many artists share each
+   `BeginDate` value — one key per year, one count per key.
+3. Sorts that dictionary by count, largest first, and keeps just the top
+   **10**.
+4. Prints each of those years next to its count.
+
+Everything you need has already been covered somewhere in this course.
+For step 2, think about the `if` / `else` and `in` patterns from
+[Part 5](../part5/) and [Part 1](../part1/) — for each artist, is their
+birth year already a key in your dictionary or not? For step 3, `sorted()`
+takes a `lambda` key, which we covered in [week 3](https://craigfahner.github.io/INFO-664/part3/). 
+
 ### Homework 
 
 1. **complete the in-class coding challenge** if you haven't already
