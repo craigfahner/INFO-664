@@ -17,6 +17,8 @@ permalink: /week5/
 * [Final project info](https://craigfahner.github.io/INFO-664/final/)
 * [Final project proposal](https://docs.google.com/document/d/1s8dxITVsdydEv0ruppHDsOejC7CLYqfA8zM2fhsiEAM/edit?usp=sharing)
 * Individual discussions about final project ideas
+* [Lecture notes Part 8: Review](https://craigfahner.github.io/INFO-664/part8/)
+
 
 **Download the MoMA Artists CSV**
 
