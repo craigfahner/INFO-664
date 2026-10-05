@@ -16,9 +16,7 @@ and searching through it ourselves, we can send a request like "find every
 object that matches *antelope*" and let the server do the searching.
 
 This part uses the Metropolitan Museum of Art's
-[Collection API](https://metmuseum.github.io/), and follows the
-[`met_api.ipynb`](https://github.com/craigfahner/INFO-664/blob/main/week6/met_api.ipynb)
-notebook in the week 6 folder. The API is free, and you don't need an
+[Collection API](https://metmuseum.github.io/). The API is free, and you don't need an
 account or a key to use it. (The Met does ask that you keep to 80 requests
 per second or fewer, which is worth remembering once we start making
 requests in a loop.)

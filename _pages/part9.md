@@ -4,6 +4,7 @@ title: Part 9
 permalink: /part9/
 ---
 
+{% assign csv_url = '/notebooks/moma_artists.csv' | relative_url %}
 {% assign ono_url = '/week6/moma_ono.csv' | relative_url %}
 {% assign unesco_url = '/week6/unesco_cultural_sites.json' | relative_url %}
 {% assign loc_url = '/week6/loc_book.xml' | relative_url %}
@@ -143,7 +144,7 @@ In the editor, the new file lives in the browser's temporary storage and
 disappears when the page reloads. In a Jupyter notebook, it's a real file
 you can find next to the notebook.
 
-### Regular expressions: finding patterns in text
+### [Regular expressions: finding patterns in text](https://en.wikipedia.org/wiki/Regular_expression)
 
 Here is a caption from the Whitney Museum's website, for a photograph by
 William Wegman:
@@ -625,6 +626,91 @@ import re
 print(re.search(r"\blov\w*", "LOVE ME", re.IGNORECASE).group())
 </script>
 
+### Wildcards in real data: spelling variants
+
+Wildcards are especially handy for names, because the same name is often
+spelled several ways. In the MoMA artists file from [Part 7](../part7/),
+Catherine, Katherine, Kathleen, and Katharina all start the same way but end
+differently. Say we want every artist whose first name starts with `Cath` or
+`Kath`, however the rest of it is spelled. Without a wildcard we'd need a
+separate `==` check for every variant we could think of. With one, a single
+pattern does the job:
+
+```python
+import csv
+import re
+
+with open("moma_artists.csv", "r", encoding="utf-8") as file:
+    reader = csv.DictReader(file)
+    data = list(reader)
+
+kath_artists = []
+
+for artist in data:
+    if re.search(r"^[CK]ath\w*", artist["DisplayName"]):
+        kath_artists.append(artist)
+
+print(len(kath_artists))
+
+for artist in kath_artists[:10]:
+    print(artist["DisplayName"])
+```
+
+Which prints:
+
+```text
+31
+Kathleen Agnoli
+Kathan Brown
+Katharina Fritsch
+Catherine Lee
+Catherine Murphy
+Katherine Porter
+Katherine Schmidt
+Catherine Wagner
+Katharina Bosse
+Catherine Opie
+```
+
+This is the same filter-and-append loop from [Part 5](../part5/) as in the
+Beatles example, with `re.search()` as the condition. The pattern
+`^[CK]ath\w*` reads in four pieces:
+
+- **`^`** means the match has to start at the very beginning of the name, so
+  we're only looking at first names.
+- **`[CK]`** is a character class: either a `C` or a `K`.
+- **`ath`** is just those letters, matching themselves.
+- **`\w*`** is the wildcard. It matches zero or more word characters, which
+  takes in the rest of the first name, however long it is. It stops at the
+  space, so the surname isn't included.
+
+One pattern finds all the variants, including ones you might not have thought
+to look for, like Kathan and Cathrin.
+
+<script type="py-editor" config='{"files": {"{{ csv_url }}": "./moma_artists.csv"}}'>
+import csv
+import re
+
+with open("moma_artists.csv", "r", encoding="utf-8") as file:
+    reader = csv.DictReader(file)
+    data = list(reader)
+
+kath_artists = []
+
+for artist in data:
+    if re.search(r"^[CK]ath\w*", artist["DisplayName"]):
+        kath_artists.append(artist)
+
+print(len(kath_artists))
+
+for artist in kath_artists[:10]:
+    print(artist["DisplayName"])
+</script>
+
+Try changing `\w*` to `.*` and printing `re.search(...).group()` for each
+artist to see the difference from the Beatles example: the match now runs to
+the end of the whole name, surname included.
+
 ### Testing patterns and learning more
 
 Regular expressions are famously easy to get *almost* right. Two free
@@ -653,8 +739,8 @@ Here is a summary of the pieces used in this part:
 | `[^,]` | any one character *except* the ones listed (here, a comma) |
 | `^` | the start of the string |
 | `\b` | a word boundary (the edge of a word or number) |
-| `*` | zero or more of the thing before it |
-| `+` | one or more of the thing before it |
+| `*` | zero or more repetitions of the thing before it |
+| `+` | one or more repetitions of the thing before it |
 | `{4}` | exactly four of the thing before it |
 | `\(` `\)` | a literal parenthesis (a backslash escapes a special character) |
 | `( )` | a capture group, retrievable with `.group(1)`, `.group(2)`, ... |

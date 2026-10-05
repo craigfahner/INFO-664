@@ -51,6 +51,7 @@ INFO-664/
 * [Week 3: Lists, dictionaries, and loops](./week3/)
 * [Week 4: Loops, conditionals, functions, CSV parsing](./week4/)
 * [Week 5: Review and final project intro](./week5/)
+* [Week 6: Regular expressions, JSON, APIs](./week6/)
 
 
 * [GitHub Setup](./github-intro/)
