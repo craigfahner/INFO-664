@@ -17,13 +17,12 @@ the other direction: taking a list of dictionaries that we've built or
 filtered in Python and **writing** it out as a new CSV file, so it can be
 opened in a spreadsheet, shared, or loaded again later.
 
-The example comes from the [`writing_a_csv.ipynb`](https://github.com/craigfahner/INFO-664/blob/main/week6/writing_a_csv.ipynb)
-notebook in the week 6 folder. It uses a different MoMA file from the
+This example uses a different MoMA file from the
 artists list we've been working with: `moma_art.csv`, which has one row
 per **artwork** (about 160,000 of them, with 30 columns each, including
 `Title`, `Artist`, `Date`, `Medium`, and `Dimensions`). At 69 MB it's too
 big to load in the interactive editors on this page, so the three code
-blocks below are meant to be run in your own notebook, with the CSV saved
+blocks below are meant to be run in your own notebook, with [the moma_art CSV](https://github.com/craigfahner/INFO-664/blob/main/week6/moma_art.csv) saved
 in the same folder.
 
 **Step 1: load the whole file.** Exactly the same as in Part 7:
