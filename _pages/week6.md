@@ -13,6 +13,8 @@ permalink: /week6/
 * [Met Museum API](https://metmuseum.github.io/)
 * [NYTimes API registration](https://developer.nytimes.com/get-started)
 * [NYTimes Article Search API](https://developer.nytimes.com/docs/articlesearch-product/1/overview)
+* [Lecture notes Part 9: CSV saving and regular expressions](https://craigfahner.github.io/INFO-664/part9/)
+
 
 
 **Download the MoMA Art CSV (optional)**
