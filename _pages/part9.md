@@ -191,6 +191,36 @@ A few things to know before the first example:
   describing what it found, or the special value `None` if nothing fits.
   `None` is Python's way of saying "no value here."
 
+### Commonly used regular expression patterns
+
+Here is a quick reference for the building blocks you'll see most often.
+Each row shows a pattern and some text to search, as in
+`re.search(r"c.t", "the cat sat")`, and the last column shows what the
+pattern would match. You'll meet most of them in the examples below, and you
+can try any row out in [Pythex](https://pythex.org/) (more on that at the end
+of this section).
+
+| Character | Description | Example | Sample match |
+| --- | --- | --- | --- |
+| `.` | Any one character (except a line break) | `c.t` in `the cat sat` | `cat` |
+| `\d` | Any one digit, 0 through 9 | `\d\d` in `Room 42` | `42` |
+| `\w` | Any one letter, digit, or underscore | `\w\w\w` in `hi there` | `the` |
+| `[abc]` | Any one of the characters listed; a range like `[a-z]` or `[0-9]` works too | `[aeiou]` in `gold` | `o` |
+| `[^abc]` | Any one character *not* listed | `[^a-z]` in `cat7` | `7` |
+| `*` | Zero or more of the thing before it | `ab*` in `abbbc` | `abbb` |
+| `+` | One or more of the thing before it | `\d+` in `in 1970` | `1970` |
+| `?` | Zero or one of the thing before it (makes it optional) | `colou?r` in `colour` | `colour` (also matches `color`) |
+| `{4}` | Exactly that many of the thing before it (`{2,4}` means between 2 and 4) | `\d{4}` in `born 1970` | `1970` |
+| `^` | The start of the string | `^Mary` in `Mary Cassatt` | `Mary` (no match in `Saint Mary`) |
+| `$` | The end of the string | `\d+$` in `Room 42` | `42` |
+| `\b` | A word boundary: the edge of a word or number | `\blove` in `glove love` | `love` (the second one, which starts a word) |
+| `( )` | A capture group: marks a part of the match to pull out later with `.group(1)` | `(\d+) cm` in `20 cm` | `20 cm` (group 1 is `20`) |
+
+Most of these characters have a special meaning, which raises the question
+of how to match the character itself. Put a backslash in front of it:
+`\.` matches an actual period, `\(` an actual opening parenthesis, and `\$`
+an actual dollar sign.
+
 ### Finding the year
 
 Four digits in a row is written `([0-9]{4})`. Reading it from the inside
