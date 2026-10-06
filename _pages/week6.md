@@ -13,7 +13,9 @@ permalink: /week6/
 * [Met Museum API](https://metmuseum.github.io/)
 * [NYTimes API registration](https://developer.nytimes.com/get-started)
 * [NYTimes Article Search API](https://developer.nytimes.com/docs/articlesearch-product/1/overview)
+* [List of public apis](https://github.com/public-apis/public-apis)
 * [Lecture notes Part 9: CSV saving and regular expressions](https://craigfahner.github.io/INFO-664/part9/)
+* [Lecture notes Part 10: APIs](https://craigfahner.github.io/INFO-664/part9/)
 
 
 
