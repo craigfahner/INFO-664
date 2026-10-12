@@ -52,6 +52,7 @@ INFO-664/
 * [Week 4: Loops, conditionals, functions, CSV parsing](./week4/)
 * [Week 5: Review and final project intro](./week5/)
 * [Week 6: Regular expressions, JSON, APIs](./week6/)
+* [Week 7: More APIs, Web Scraping part 1](./week7/)
 
 
 * [GitHub Setup](./github-intro/)
