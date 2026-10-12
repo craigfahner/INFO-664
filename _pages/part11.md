@@ -184,7 +184,9 @@ Almost every website has a file at the same address: its domain followed by
 `/robots.txt`. For example, `https://www.clevelandart.org/robots.txt`. It's
 plain text, and it's where the site's owners say which parts of the site
 automated programs ("robots", also called crawlers or bots) may visit, and how
-fast. Here is the Cleveland Museum of Art's, as of October 2026:
+fast. **To read one, type `/robots.txt` after a site's main address in your
+browser.** Try it with the Cleveland address above. Here is what it said in
+October 2026:
 
 ```text
 # *
@@ -230,100 +232,28 @@ recent years many have tightened them, partly in response to large-scale
 crawlers collecting data to train AI systems. A class exercise gets caught by
 the same rules, so it's worth reading them every time.
 
+**How to read one.** Open the file in your browser, and then:
+
+1. **If you get a "not found" page,** the site hasn't published any rules, so
+   check its terms of use instead.
+2. **Find the group that covers you.** `User-agent: *` means all robots, and
+   that's the group that applies to a script like ours.
+3. **Compare your page's address with each `Disallow:` line.** Take the part of
+   the address after the domain, such as `/art/1958.31`. If it *starts with* the
+   path on a `Disallow:` line, that page is off limits. `/membership/join` is
+   blocked by `Disallow: /membership`, but `/art/1958.31` doesn't start with any
+   of Cleveland's `Disallow:` paths, so it's allowed. A `Disallow:` with nothing
+   after it blocks nothing.
+4. **Look for an `Allow:` line**, which makes an exception to a `Disallow:`.
+5. **Note the `Crawl-delay:`**, if there is one. That's how many seconds to wait
+   between requests.
+6. **Write down what you found,** including the date, since the rules can change.
+
 **`robots.txt` isn't a lock.** Nothing stops a program from ignoring it. It's a
 published request from the site's owners, and respecting it is the
 expected behavior. Ignoring it can get your IP address blocked, break the
 site's terms of use, and cause real trouble for you. It also matters because a
 scraper that sends requests too quickly can slow a site down for everyone else.
-
-### Checking robots.txt in Python
-
-Python has a module for reading `robots.txt` rules, called
-`urllib.robotparser`, and it answers the question "may this robot request
-this address?" It's a good habit to ask it before writing a scraper. In a
-notebook, point it at the site's file and read it:
-
-```python
-from urllib.robotparser import RobotFileParser
-
-robots = RobotFileParser("https://www.clevelandart.org/robots.txt")
-robots.read()
-
-user_agent = "INFO664-class-project"
-
-print(robots.can_fetch(user_agent, "https://www.clevelandart.org/art/1958.31"))
-print(robots.can_fetch(user_agent, "https://www.clevelandart.org/membership"))
-print(robots.crawl_delay(user_agent))
-```
-
-```text
-True
-False
-10
-```
-
-- **`can_fetch(user_agent, url)`** returns `True` if the rules allow that
-  robot to request that address, and `False` if not. The artwork page is
-  allowed, and `/membership` is not.
-- **`crawl_delay(user_agent)`** returns the number of seconds the site asks us
-  to wait between requests, or `None` if it doesn't say.
-
-If a site rejects Python's default user agent, `.read()` can fail. In that
-case, fetch the file yourself with `requests` and an honest `User-Agent`
-header (see below), then hand its lines to `.parse()`:
-
-```python
-response = requests.get("https://www.clevelandart.org/robots.txt", headers=headers)
-
-robots = RobotFileParser()
-robots.parse(response.text.splitlines())
-```
-
-The editor below tries the same thing without needing the internet. It reads
-the rules from a list of lines (the `.parse()` method), so you can test other
-rules too. Try changing a `Disallow` line, or adding your own address to the
-list of paths:
-
-<script type="py-editor">
-from urllib.robotparser import RobotFileParser
-
-cleveland_rules = """
-User-agent: *
-Crawl-delay: 10
-Disallow: /membership
-Disallow: /orders
-Disallow: /api
-Disallow: /errors
-Disallow: /404
-Disallow: /500
-"""
-
-milwaukee_rules = """
-User-agent: *
-Disallow: /
-"""
-
-user_agent = "INFO664-class-project"
-
-cleveland = RobotFileParser()
-cleveland.parse(cleveland_rules.splitlines())
-
-milwaukee = RobotFileParser()
-milwaukee.parse(milwaukee_rules.splitlines())
-
-paths = ["/art/1958.31", "/membership", "/api/v1/artworks"]
-
-print("Cleveland Museum of Art")
-for path in paths:
-    print(path, cleveland.can_fetch(user_agent, path))
-print("crawl delay:", cleveland.crawl_delay(user_agent))
-
-print()
-print("Milwaukee Art Museum collection")
-for path in paths:
-    print(path, milwaukee.can_fetch(user_agent, path))
-print("crawl delay:", milwaukee.crawl_delay(user_agent))
-</script>
 
 ### Identifying yourself, and going slowly
 
@@ -588,9 +518,50 @@ for index, child in enumerate(children):
 13 div | Videos Artist Biography Provenance Citations Exhibition History Cite t
 ```
 
-(`enumerate()` is from [Part 7](../part7/), and `strip=True` removes extra
-whitespace around each piece of text.) This is the page's structure laid out as
-a list, and almost every fact we want is in it:
+Two things in that code deserve a closer look.
+
+**`enumerate()`** (from [Part 7](../part7/)). A `for` loop normally gives us one
+thing per pass: the next `child`. Here we also want each child's *position* in
+the list, so that we can talk about "child 5". `enumerate()` takes a list and
+hands back **pairs**, each one a position followed by the item at that
+position. Here it is on a short list:
+
+```python
+tags = ["h2", "div", "div"]
+
+print(list(enumerate(tags)))
+```
+
+```text
+[(0, 'h2'), (1, 'div'), (2, 'div')]
+```
+
+(The `list()` is only there so that we can see the pairs. `enumerate()` really
+makes them one at a time, as the loop asks for them.) The positions start at
+`0`, like list indexes. In our loop, `for index, child in enumerate(children):`
+**unpacks** each pair into two variables. On the first pass, `index` is `0` and
+`child` is the `<h2>`. On the second, `index` is `1` and `child` is the first
+`<div>`, and so on to the end of the list.
+
+Without `enumerate()`, we'd have to keep the count ourselves:
+
+```python
+index = 0
+
+for child in children:
+    print(index, child.name)
+    index += 1
+```
+
+That gives the same numbers, but with extra bookkeeping, and it's an easy line to
+forget. (`enumerate(children, start=1)` would count from `1` instead, but we
+want `0` here, because it matches the positions we use to pick a child out of
+the list, as in `children[5]` below.)
+
+**`strip=True`** removes extra whitespace around each piece of text.
+
+The output is the page's structure laid out as a list, and almost every fact we
+want is in it:
 
 - **Children `1`, `2`, and `3`** hold the title, the date, and the artist.
   They have no labels. We can tell them apart by what they contain: the title
@@ -1187,3 +1158,673 @@ came from.
 
 We now have the code to turn one artwork page into one dictionary. The next
 step is to repeat it for many pages, and collect the dictionaries in a list.
+
+### Scraping several artworks
+
+One artwork is a record. To make a *dataset*, we need to repeat the steps for
+many works and collect the results. We'll scrape the works by Vincent van Gogh
+in the Cleveland Museum of Art's collection, in four steps:
+
+1. Make a list of the pages' addresses.
+2. Turn the single-page code from the last section into a function.
+3. Loop over the list, scraping each page.
+4. Collect the dictionaries in a list.
+
+#### Collecting the URLs
+
+First, we need the addresses. The collection search page lists an artist's
+works, but it builds its results with JavaScript after the page opens, so
+`requests` would get an empty page, the same problem we met with the "View
+Page Source" test. A person using a browser sees the list just fine, so this
+step is one we do by hand, as a person deciding which pages to study:
+
+1. Open one of the artist's artwork pages, such as
+   `https://www.clevelandart.org/art/1958.31`, and click the artist's name,
+   *Vincent van Gogh*. This opens the collection search, showing his works.
+2. Open each work and copy its address from the browser's address bar. The
+   address always ends with the work's accession number, so you can also copy
+   just the accession numbers and add them to
+   `https://www.clevelandart.org/art/`.
+3. Paste the addresses into a Python list, one string per address.
+
+At the time of writing, the collection has five works by Van Gogh:
+
+```python
+urls = [
+    "https://www.clevelandart.org/art/1958.31",
+    "https://www.clevelandart.org/art/1947.209",
+    "https://www.clevelandart.org/art/1958.32",
+    "https://www.clevelandart.org/art/1958.30",
+    "https://www.clevelandart.org/art/1948.303",
+]
+```
+
+It's worth pasting each address into your browser to check it before running
+anything. A typo means a `404` error, the status code from
+[Part 10](../part10/), and that's much easier to catch now than after the loop
+has run.
+
+#### Turning the scraper into a function
+
+The code from the last section does one page. We'll wrap it in a function, from
+[Part 6](../part6/), so we can call it once per page. The function takes the
+page's HTML text and its address as **arguments**, and **returns** the
+dictionary. Taking the HTML as an argument matters: the function doesn't care
+whether the HTML came from a live request or from a saved file, which we'll use
+in a moment.
+
+It uses the two helper functions from the last section, `get_row_value()` and
+`get_row_text()`, so those need to be defined in your notebook above this one.
+The rest is the same code as before, one step after another:
+
+```python
+def scrape_artwork(html, url):
+    soup = BeautifulSoup(html, "html.parser")
+    box = soup.find(id="artwork-details-container")
+
+    title = box.find("h3").get_text(strip=True)
+    artist = box.find("h4").get_text(" ", strip=True)
+
+    artist_block = box.find("h4").find_parent("div")
+    bio_text = artist_block.find_next_sibling("span").get_text(strip=True)
+    artist_bio = bio_text.strip("()")
+
+    title_block = box.find("h3").find_parent("div")
+    date = title_block.find_next_sibling("div").get_text(strip=True)
+
+    culture = get_row_text(box, "Culture")
+    medium = get_row_text(box, "Medium")
+    measurements = get_row_text(box, "Measurements")
+    location = get_row_text(box, "Location")
+
+    credit = get_row_value(box, "Credit Line")
+    credit_line = credit.find("a").get_text(strip=True)
+    accession_number = credit.find("span").get_text(strip=True)
+
+    license_text = box.find("svg").find("title").get_text(strip=True)
+
+    description_label = box.find("h3", string="Description")
+    description = description_label.find_next_sibling("span").get_text(" ", strip=True)
+
+    image_url = soup.find("meta", property="og:image")["content"]
+
+    return {
+        "title": title,
+        "artist": artist,
+        "artist_bio": artist_bio,
+        "date": date,
+        "culture": culture,
+        "medium": medium,
+        "measurements": measurements,
+        "credit_line": credit_line,
+        "accession_number": accession_number,
+        "location": location,
+        "license": license_text,
+        "description": description,
+        "image_url": image_url,
+        "url": url,
+    }
+```
+
+The `return` ends the function by sending back the finished dictionary. Calling
+`scrape_artwork(html, url)` with a page's HTML gives us that page's record.
+
+#### Looping over the URLs
+
+Now we go through the list. For each address, the loop requests the page,
+checks that it worked, calls the function on the page's HTML, and **appends**
+the resulting dictionary to a list, the same `.append()` pattern from
+[Part 3](../part3/):
+
+```python
+import requests
+from time import sleep
+
+headers = {"User-Agent": "INFO664-class-project (educational)"}
+
+artworks = []
+
+for url in urls:
+    response = requests.get(url, headers=headers)
+
+    if response.ok:
+        artwork = scrape_artwork(response.text, url)
+        artworks.append(artwork)
+    else:
+        print(url, "failed with status code", response.status_code)
+
+    sleep(10)
+```
+
+- **`headers`** is the honest `User-Agent` from earlier in this part.
+- **`response.ok`** is the success check from Part 10. If a request fails, the
+  loop prints the address and the status code, and moves on to the next one,
+  so one bad address doesn't stop the whole run.
+- **`response.text`** is the page's HTML as a string, which is exactly what
+  `scrape_artwork()` wants as its first argument.
+- **`sleep(10)`** is the 10-second pause that Cleveland's `robots.txt` asks
+  for. Five pages take about a minute.
+
+**A note on running this in class.** If everyone runs this loop at the same
+moment, the museum's server receives all those requests at once, far faster than
+the 10 seconds it asks for. So in class we'll take turns, or work from saved
+copies of the pages. Because `scrape_artwork()` takes the HTML as an argument,
+the saved-copy version only changes where the HTML comes from. Say you've
+saved each page in your notebook's folder as, for example,
+`cma_1958_31.html`. Then the loop reads the files instead of making requests,
+and doesn't need `sleep()`:
+
+```python
+artworks = []
+
+for url in urls:
+    accession = url.split("/")[-1]
+    filename = "cma_" + accession.replace(".", "_") + ".html"
+
+    with open(filename, "r", encoding="utf-8") as file:
+        artworks.append(scrape_artwork(file.read(), url))
+```
+
+`url.split("/")[-1]` (from [Part 2](../part2/)) takes the last piece of the
+address, the accession number, and `.replace(".", "_")` turns it into the
+form used in the file name.
+
+#### The dictionary list
+
+When the loop finishes, `artworks` is a list of dictionaries, one per work:
+
+```python
+print(len(artworks))
+
+for artwork in artworks:
+    print(artwork["accession_number"], "|", artwork["title"], "|", artwork["date"], "|", artwork["medium"])
+```
+
+```text
+5
+1958.31 | Adeline Ravoux | 1890 | oil on fabric
+1947.209 | The Large Plane Trees (Road Menders at Saint-Rémy) | 1889 | oil on fabric
+1958.32 | Two Poplars in the Alpilles near Saint-Rémy | 1889 | oil on fabric
+1958.30 | Landscape with Wheelbarrow | 1883 | watercolor and opaque watercolor with black chalk on cream paper
+1948.303 | Dr. Gachet | 1890 | Etching and drypoint, enhanced with black ink on laid paper
+```
+
+That's the same shape as the `data` list from `csv.DictReader` in
+[Part 7](../part7/): a list of dictionaries with the same keys, which means
+everything we did with those applies here too. For instance, the filter loop
+from [Part 5](../part5/), using `in` from [Part 2](../part2/), picks out the
+works made in oil:
+
+```python
+oil_paintings = []
+
+for artwork in artworks:
+    if "oil" in artwork["medium"]:
+        oil_paintings.append(artwork)
+
+for artwork in oil_paintings:
+    print(artwork["title"])
+```
+
+```text
+Adeline Ravoux
+The Large Plane Trees (Road Menders at Saint-Rémy)
+Two Poplars in the Alpilles near Saint-Rémy
+```
+
+The run also turned up differences between the works, which our label-based
+code coped with:
+
+- **The drawing has an extra row.** *Landscape with Wheelbarrow* has a
+  `Support` row that the other works don't. Because we look rows up by label,
+  an extra row doesn't disturb anything. We just don't collect it.
+- **The location varies.** Two of the works say `Not on view`, two say
+  `222 Impressionism & Post-Impressionism`, and the fifth says it is on loan,
+  with dates (`On view at Fondation Louis Vuitton, Paris, Oct 9, 2026 - Mar 8,
+  2027`). A column like this needs cleaning before it can be counted or mapped.
+- **The mediums vary widely**, from `oil on fabric` to `Etching and drypoint,
+  enhanced with black ink on laid paper`.
+- **The code is only as good as the page.** If the museum redesigns its pages,
+  `scrape_artwork()` will most likely stop with an `AttributeError`, from
+  calling a method on `None`. That's the signal to inspect the new page and
+  update the code.
+
+The editor below runs the same function and loop on two works, using trimmed
+copies of their pages in place of live requests. The `saved_pages` dictionary
+stands in for the web: it looks up each address and returns that page's HTML.
+Try adding a `print()` of one whole dictionary, or filtering for the works
+dated `1890`:
+
+<script type="py-editor" config='{"packages": ["beautifulsoup4"]}'>
+from bs4 import BeautifulSoup
+
+page_adeline = """
+<html>
+<head><meta property="og:image" content="https://piction.clevelandart.org/cma/ump.di?e=DBA3E21E7303FB54FA88AA7F4C77DAD98BD491FB080247C617896105276440B3&s=24247294&se=116628280&v=0&f=1958.31_w.jpg"></head>
+<body>
+<div id="artwork-details-container">
+ <h2>Details / Information for Adeline Ravoux</h2>
+ <div><h3 data-testid="heading" id="adeline-ravoux">Adeline Ravoux</h3></div>
+ <div>1890</div>
+ <div>
+  <div><div><h4 data-testid="heading"><span>
+   <a href="/art/collection/search?artists=Vincent%20van%20Gogh"><span>Vincent van Gogh</span></a>
+  </span></h4></div>
+  <span>(Dutch, 1853–1890)</span></div>
+ </div>
+ <div><div>Culture</div><a href="/art/collection/search?culture=Netherlands">Netherlands</a></div>
+ <div><div>Medium</div><a href="/art/collection/search?medium=oil%20on%20fabric">oil on fabric</a></div>
+ <div><div>Measurements</div><span>Framed: 72.5 x 73.5 x 8.5 cm (28 9/16 x 28 15/16 x 3 3/8 in.); Unframed: 50.2 x 50.5 cm (19 3/4 x 19 7/8 in.)</span></div>
+ <div><div>Credit Line</div><div>
+  <a href="/art/collection/search?credit=Bequest%20of%20Leonard%20C.%20Hanna%20Jr.">Bequest of Leonard C. Hanna Jr.</a>
+  <span> 1958.31</span></div></div>
+ <div><div><svg><title>Public Domain</title></svg></div>
+  <div>You can copy, modify, and distribute this work, all without asking permission.</div></div>
+ <div><div>Location</div><span>
+  <a href="/art/collection/search?gallery=222%20Impressionism%20%26%20Post-Impressionism">222 Impressionism &amp; Post-Impressionism</a>
+ </span></div>
+ <div><h3>Description</h3><span>In May 1890, Vincent van Gogh arrived in Auvers, a small town north of Paris, where he rented a room at the inn of Arthur Ravoux. This portrait, completed during the last months of the artist’s life, depicts Ravoux’s 13-year-old daughter, Adeline.</span></div>
+</div>
+</body>
+</html>
+"""
+
+page_gachet = """
+<html>
+<head><meta property="og:image" content="https://piction.clevelandart.org/cma/ump.di?e=ED80E9485DC95300FBDCDE8A6F4CECF327C16F80A5BC205243994608C9849820&s=24247294&se=399313166&v=3&f=1948.303_w.jpg"></head>
+<body>
+<div id="artwork-details-container">
+ <h2>Details / Information for Dr. Gachet</h2>
+ <div><h3 data-testid="heading" id="dr-gachet">Dr. Gachet</h3></div>
+ <div>1890</div>
+ <div>
+  <div><div><h4 data-testid="heading"><span>
+   <a href="/art/collection/search?artists=Vincent%20van%20Gogh"><span>Vincent van Gogh</span></a>
+  </span></h4></div>
+  <span>(Dutch, 1853–1890)</span></div>
+ </div>
+ <div><div>Culture</div><a href="/art/collection/search?culture=Netherlands">Netherlands</a></div>
+ <div><div>Medium</div><a href="/art/collection/search?medium=Etching">Etching and drypoint, enhanced with black ink on laid paper</a></div>
+ <div><div>Measurements</div><span>18.1 x 15.2 cm (7 1/8 x 6 in.)</span></div>
+ <div><div>Credit Line</div><div>
+  <a href="/art/collection/search?credit=Dudley%20P.%20Allen%20Fund">Dudley P. Allen Fund</a>
+  <span> 1948.303</span></div></div>
+ <div><div><svg><title>Public Domain</title></svg></div>
+  <div>You can copy, modify, and distribute this work, all without asking permission.</div></div>
+ <div><div>Location</div><span>
+  <a href="/art/collection/search?gallery=Not%20on%20view">Not on view</a>
+ </span></div>
+ <div><h3>Description</h3><span>This portrait of Dr. Paul Gachet, made just two months before the artist’s death, is the only etching that Vincent van Gogh created.</span></div>
+</div>
+</body>
+</html>
+"""
+
+saved_pages = {
+    "https://www.clevelandart.org/art/1958.31": page_adeline,
+    "https://www.clevelandart.org/art/1948.303": page_gachet,
+}
+
+urls = list(saved_pages.keys())
+
+
+def get_row_value(box, label_text):
+    label = box.find("div", string=label_text)
+    if label is None:
+        return None
+    return label.find_next_sibling()
+
+
+def get_row_text(box, label_text):
+    value = get_row_value(box, label_text)
+    if value is None:
+        return None
+    return value.get_text(" ", strip=True)
+
+
+def scrape_artwork(html, url):
+    soup = BeautifulSoup(html, "html.parser")
+    box = soup.find(id="artwork-details-container")
+
+    title = box.find("h3").get_text(strip=True)
+    artist = box.find("h4").get_text(" ", strip=True)
+
+    artist_block = box.find("h4").find_parent("div")
+    bio_text = artist_block.find_next_sibling("span").get_text(strip=True)
+    artist_bio = bio_text.strip("()")
+
+    title_block = box.find("h3").find_parent("div")
+    date = title_block.find_next_sibling("div").get_text(strip=True)
+
+    culture = get_row_text(box, "Culture")
+    medium = get_row_text(box, "Medium")
+    measurements = get_row_text(box, "Measurements")
+    location = get_row_text(box, "Location")
+
+    credit = get_row_value(box, "Credit Line")
+    credit_line = credit.find("a").get_text(strip=True)
+    accession_number = credit.find("span").get_text(strip=True)
+
+    license_text = box.find("svg").find("title").get_text(strip=True)
+
+    description_label = box.find("h3", string="Description")
+    description = description_label.find_next_sibling("span").get_text(" ", strip=True)
+
+    image_url = soup.find("meta", property="og:image")["content"]
+
+    return {
+        "title": title,
+        "artist": artist,
+        "artist_bio": artist_bio,
+        "date": date,
+        "culture": culture,
+        "medium": medium,
+        "measurements": measurements,
+        "credit_line": credit_line,
+        "accession_number": accession_number,
+        "location": location,
+        "license": license_text,
+        "description": description,
+        "image_url": image_url,
+        "url": url,
+    }
+
+
+artworks = []
+
+for url in urls:
+    html = saved_pages[url]
+    artwork = scrape_artwork(html, url)
+    artworks.append(artwork)
+
+print(len(artworks))
+
+for artwork in artworks:
+    print(artwork["accession_number"], "|", artwork["title"], "|", artwork["date"], "|", artwork["medium"])
+</script>
+
+The pattern here (a list of inputs, a function that does the work for one, and a
+loop that collects the results into a list) is what turns a scraper into a
+dataset builder. The last step is to save the list to a file. We'll do it two
+ways: as a CSV, and as JSON.
+
+#### Saving the list as a CSV
+
+`artworks` only exists while the notebook is running. To keep the dataset, we
+write it to a file. We'll start with a **CSV**, the format from
+[Part 7](../part7/) that opens in any spreadsheet. This is the same process as
+the "Saving a CSV file" section of [Part 9](../part9/): a list of dictionaries
+goes into a `csv.DictWriter`.
+
+```python
+import csv
+
+with open("van_gogh_artworks.csv", "w", encoding="utf-8") as file:
+    writer = csv.DictWriter(file, artworks[0].keys())
+    writer.writeheader()
+    writer.writerows(artworks)
+```
+
+It works the same way as it did in Part 9:
+
+- **`"w"`** opens the file for writing, and replaces it if it already exists.
+- **`artworks[0].keys()`** gives the column names: the keys of the first
+  dictionary, in order. Our 14 keys become 14 columns.
+- **`writer.writeheader()`** writes the column names as the first line.
+- **`writer.writerows(artworks)`** writes one line for each dictionary.
+
+This is where building the dictionaries with a function pays off. Every
+dictionary that `scrape_artwork()` returns has the same 14 keys, so they all fit
+the same columns. A dictionary with an extra key would make `DictWriter` stop
+with a `ValueError`.
+
+The new file, `van_gogh_artworks.csv`, appears next to your notebook. It's about
+5 KB, with one header line and five rows. Here is the header:
+
+```text
+title,artist,artist_bio,date,culture,medium,measurements,credit_line,accession_number,location,license,description,image_url,url
+```
+
+Some of our values contain commas, like `Dutch, 1853–1890` in `artist_bio`,
+the long descriptions, and the medium `Etching and drypoint, enhanced with black
+ink on laid paper`. The writer puts quotation marks around those, the same way
+the `ArtistBio` values were quoted in the MoMA file in Part 7, so the commas
+inside a value aren't mistaken for the commas between columns.
+
+**Checking the file.** Reading it back with `csv.DictReader`, as in Part 7, is a
+good test:
+
+```python
+with open("van_gogh_artworks.csv", "r", encoding="utf-8") as file:
+    reader = csv.DictReader(file)
+    loaded = list(reader)
+
+print(len(loaded))
+print(loaded[0]["title"])
+print(loaded[4]["medium"])
+print(loaded == artworks)
+```
+
+```text
+5
+Adeline Ravoux
+Etching and drypoint, enhanced with black ink on laid paper
+True
+```
+
+The comma in the medium survived, and `loaded == artworks` is `True`. That
+comparison only holds because everything we scraped is already text. A CSV file
+stores **everything as text**, so a number would come back as a string, and
+there's no way to write `None`. A value of `None` is written as an empty cell,
+and read back as an empty string, `''`, which is a difference from JSON. The
+editor below shows it:
+
+<script type="py-editor">
+import csv
+
+artworks = [
+    {
+        "title": "Adeline Ravoux",
+        "artist": "Vincent van Gogh",
+        "artist_bio": "Dutch, 1853–1890",
+        "date": "1890",
+        "medium": "oil on fabric",
+        "culture": "Netherlands",
+    },
+    {
+        "title": "Dr. Gachet",
+        "artist": "Vincent van Gogh",
+        "artist_bio": "Dutch, 1853–1890",
+        "date": "1890",
+        "medium": "Etching and drypoint, enhanced with black ink on laid paper",
+        "culture": "Netherlands",
+    },
+]
+
+artworks[1]["culture"] = None   # pretend this work's page had no Culture row
+
+with open("demo_artworks.csv", "w", encoding="utf-8") as file:
+    writer = csv.DictWriter(file, artworks[0].keys())
+    writer.writeheader()
+    writer.writerows(artworks)
+
+with open("demo_artworks.csv", "r", encoding="utf-8") as file:
+    print(file.read())
+
+with open("demo_artworks.csv", "r", encoding="utf-8") as file:
+    reader = csv.DictReader(file)
+    loaded = list(reader)
+
+print(loaded[1]["medium"])
+print(repr(loaded[1]["culture"]))
+print(loaded == artworks)
+</script>
+
+The last line prints `False` this time, because the `None` in `artworks` came
+back as `''`.
+
+Two notes about opening the file in a spreadsheet. If accented letters or dashes
+look wrong in Excel, try `encoding="utf-8-sig"` when writing the file, which adds a
+marker that tells Excel it's UTF-8. And if you're on Windows and blank lines
+show up between the rows, add `newline=""` to `open()`, as mentioned in
+[Part 9](../part9/).
+
+#### Saving the list as JSON
+
+A CSV is one way to keep the dataset. **JSON** is another, and it's a good fit
+for a list of dictionaries: that's exactly the shape JSON describes, so the file
+is a faithful copy of what's in memory. It also keeps things that a CSV can't,
+like nested lists and dictionaries, and the difference between a missing value
+(`null`) and an empty string. And it's the format most web data uses.
+
+In [Part 9](../part9/), `json.load()` read a JSON file into Python. Its
+counterpart for writing is `json.dump()`:
+
+```python
+import json
+
+with open("van_gogh_artworks.json", "w", encoding="utf-8") as file:
+    json.dump(artworks, file, indent=4, ensure_ascii=False)
+```
+
+- **`open(..., "w", ...)`** is the write mode from [Part 7](../part7/). It
+  creates the file, or **replaces** it if it already exists.
+- **`json.dump(artworks, file, ...)`** converts the Python data into JSON text
+  and writes it to the file. Note the order: `json.dump()` takes the data first
+  and the file second, while `csv.DictWriter()` takes the file first.
+- **`indent=4`** spreads the output over many lines, with each level of nesting
+  indented four spaces, so a person can read the file. Leave it out and the
+  whole list is written as a single long line, which is smaller but unreadable.
+- **`ensure_ascii=False`** keeps accented letters and dashes as they are. By
+  default, `json` writes any character outside plain English text as an
+  escape code. Compare the two with `json.dumps()` (with an *s*, which makes a
+  *string* instead of writing a file):
+
+  ```python
+  title = artworks[1]["title"]
+
+  print(json.dumps(title))
+  print(json.dumps(title, ensure_ascii=False))
+  ```
+
+  ```text
+  "The Large Plane Trees (Road Menders at Saint-R\u00e9my)"
+  "The Large Plane Trees (Road Menders at Saint-Rémy)"
+  ```
+
+  Both are valid JSON, and a program reading either one gets the same text
+  back. But the second is far easier to read, especially for the
+  `–` in a date range like `1853–1890`.
+
+The new file, `van_gogh_artworks.json`, appears next to your notebook. It's
+about 7 KB, 81 lines. This is the start of it, with the long values shortened
+(the file has them in full):
+
+```text
+[
+    {
+        "title": "Adeline Ravoux",
+        "artist": "Vincent van Gogh",
+        "artist_bio": "Dutch, 1853–1890",
+        "date": "1890",
+        "culture": "Netherlands",
+        "medium": "oil on fabric",
+        "measurements": "Framed: 72.5 x 73.5 x 8.5 cm (28 9/16 x 28 15/16 x 3 3/8 in.); Unframed: 50...",
+        "credit_line": "Bequest of Leonard C. Hanna Jr.",
+        "accession_number": "1958.31",
+        "location": "222 Impressionism & Post-Impressionism",
+        "license": "Public Domain",
+        "description": "In May 1890, Vincent van Gogh arrived in Auvers, a small town north of Paris...",
+        "image_url": "https://piction.clevelandart.org/cma/ump.di?e=DBA3E21E7303FB54FA88AA7F4C77DAD9...",
+        "url": "https://www.clevelandart.org/art/1958.31"
+    },
+    {
+        "title": "The Large Plane Trees (Road Menders at Saint-Rémy)",
+        "artist": "Vincent van Gogh",
+```
+
+Python's types become JSON's in a predictable way: a list becomes an array in
+square brackets, a dictionary becomes an object in curly braces, strings stay
+strings, and `None` becomes `null`. That last one matters here: if a work's
+page had no `Culture` row, `get_row_text()` returned `None`, and the file would
+have `"culture": null` for that work.
+
+**Checking the file.** Reading it back with `json.load()` is a good test that
+it was written correctly, and it's also how you'd load the dataset in any
+later notebook:
+
+```python
+with open("van_gogh_artworks.json", "r", encoding="utf-8") as file:
+    loaded = json.load(file)
+
+print(type(loaded))
+print(len(loaded))
+print(loaded[0]["title"])
+print(loaded == artworks)
+```
+
+```text
+<class 'list'>
+5
+Adeline Ravoux
+True
+```
+
+We get back a list of 5 dictionaries, and `loaded == artworks` is `True`: the
+data that came out of the file is identical to what went in. The editor below
+shows the same steps on two of the works, using a smaller set of keys. It also
+sets one value to `None` so that you can see it become `null`:
+
+<script type="py-editor">
+import json
+
+artworks = [
+    {
+        "title": "Adeline Ravoux",
+        "artist": "Vincent van Gogh",
+        "artist_bio": "Dutch, 1853–1890",
+        "date": "1890",
+        "culture": "Netherlands",
+    },
+    {
+        "title": "The Large Plane Trees (Road Menders at Saint-Rémy)",
+        "artist": "Vincent van Gogh",
+        "artist_bio": "Dutch, 1853–1890",
+        "date": "1889",
+        "culture": "Netherlands",
+    },
+]
+
+artworks[1]["culture"] = None   # pretend this work's page had no Culture row
+
+with open("demo_artworks.json", "w", encoding="utf-8") as file:
+    json.dump(artworks, file, indent=4, ensure_ascii=False)
+
+with open("demo_artworks.json", "r", encoding="utf-8") as file:
+    loaded = json.load(file)
+
+print(len(loaded))
+print(loaded == artworks)
+print()
+
+print(json.dumps(artworks[1]["title"]))
+print(json.dumps(artworks[1]["title"], ensure_ascii=False))
+print()
+
+with open("demo_artworks.json", "r", encoding="utf-8") as file:
+    print(file.read())
+</script>
+
+Try removing `indent=4` or `ensure_ascii=False` from the `json.dump()` call and
+running it again, to see what the file looks like without them.
+
+A word on what the file contains. It holds text and addresses copied from the
+museum's pages. That's fine to keep for our class work, but before you share or
+publish a dataset like this, check the museum's terms of use for what you may
+reuse. The `license` field is there to help with that, but it's no substitute
+for reading the terms.
+
+That's the whole pipeline. We checked that scraping was allowed, looked at how
+a page is built, wrote code to pull one artwork out of its HTML tags, turned
+that into a function and ran it on a list of pages, and saved the list of
+dictionaries as a CSV and as JSON.
