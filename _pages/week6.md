@@ -15,7 +15,7 @@ permalink: /week6/
 * [NYTimes Article Search API](https://developer.nytimes.com/docs/articlesearch-product/1/overview)
 * [List of public apis](https://github.com/public-apis/public-apis)
 * [Lecture notes Part 9: CSV saving and regular expressions](https://craigfahner.github.io/INFO-664/part9/)
-* [Lecture notes Part 10: APIs](https://craigfahner.github.io/INFO-664/part9/)
+* [Lecture notes Part 10: APIs](https://craigfahner.github.io/INFO-664/part10/)
 * [In-class jupyter notebook](https://github.com/craigfahner/INFO-664/blob/main/week6/week6.ipynb)
 
 **Download the MoMA Art CSV (optional)**
