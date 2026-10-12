@@ -6,8 +6,9 @@ permalink: /week7/
 
 ## Week 7 activities
 
-
+* [NYTimes Article Search API](https://developer.nytimes.com/docs/articlesearch-product/1/overview)
 * [the Beautiful Soup Library!](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+* [All about Webscraping (from Cornell University Libraries)](https://guides.library.cornell.edu/text-as-data/webscrape)
 
 ### Code Snippets for in-class demos
 
