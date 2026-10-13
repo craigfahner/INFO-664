@@ -9,6 +9,7 @@ permalink: /week7/
 * [NYTimes Article Search API](https://developer.nytimes.com/docs/articlesearch-product/1/overview)
 * [the Beautiful Soup Library!](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
 * [All about Webscraping (from Cornell University Libraries)](https://guides.library.cornell.edu/text-as-data/webscrape)
+* [Week 7 In-class notebook (web scraping!)](https://github.com/craigfahner/INFO-664/blob/main/week7/week7_scratch_cf.ipynb)
 
 ### Code Snippets for in-class demos
 
