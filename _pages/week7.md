@@ -72,20 +72,7 @@ from bs4 import BeautifulSoup # the scraping library!
 
 *example html data*:
 
-```
-html = """
-<html>
-  <body>
-    <h1>Adeline Ravoux</h1>
-    <p class="artist">Vincent van Gogh</p>
-    <p class="date">1890</p>
-    <a href="/art/1958.31">Artwork page</a>
-  </body>
-</html>
-"""
 
-soup = BeautifulSoup(html, "html.parser")  # html.parser is the built-in parser that comes with python
-```
 
 *setting up a fetch function*:
 
