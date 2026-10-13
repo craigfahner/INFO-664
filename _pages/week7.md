@@ -9,95 +9,27 @@ permalink: /week7/
 * [NYTimes Article Search API](https://developer.nytimes.com/docs/articlesearch-product/1/overview)
 * [the Beautiful Soup Library!](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
 * [All about Webscraping (from Cornell University Libraries)](https://guides.library.cornell.edu/text-as-data/webscrape)
+* [Week 7 In-class notebook (NYTimes API)](https://github.com/craigfahner/INFO-664/blob/main/week7/week7.ipynb)
 * [Week 7 In-class notebook (web scraping!)](https://github.com/craigfahner/INFO-664/blob/main/week7/week7_scratch_cf.ipynb)
+* [Lecture notes part 11: Web Scraping](https://craigfahner.github.io/INFO-664/part11/)
 
 ### Code Snippets for in-class demos
 
-At various times today you'll need these code snippets! Keep them handy so you don't have to type out lengthy URLs etc:
+My formatting was broken so I deleted these! find these in the [Week 7 In-class notebook)](https://github.com/craigfahner/INFO-664/blob/main/week7/week7_scratch_cf.ipynb)
 
-
-**NYTimes API snippets!**
-
-*Setting up API key and imports*:
-
-```python
-import requests
-from getpass import getpass
-from time import sleep
-
-key = getpass("Paste your NYT API key: ")
-```
-
-*Making a query*:
-
-```python
-query = "migrant"
-
-begin_date = "20260901"
-end_date = "20260930"
-
-url = f"https://api.nytimes.com/svc/search/v2/articlesearch.json?q={query}&begin_date={begin_date}&end_date={end_date}&api-key={key}"
-response = requests.get(url)
-```
 
 *Getting Paginated Results*:
-
-```python
-results = []
-
-for page in range(0, 5):
-    url = f"https://api.nytimes.com/svc/search/v2/articlesearch.json?q={query}&begin_date={begin_date}&end_date={end_date}&page={page}&api-key={key}"
-    response = requests.get(url)
-
-    if response.ok:
-        parsed = response.json()
-        articles = parsed["response"]["docs"]
-        results.append(articles)
-    else:
-        print("page", page, "failed with status code", response.status_code)
-
-    sleep(12)
-```
 
 **Snippets for web scraping demo**:
 
 *imports*:
 
-```import csv
-import json
-import os # operating system library, let's us do things like making new folders
-import requests
-from time import sleep
-from bs4 import BeautifulSoup # the scraping library!
-```
 
 *example html data*:
 
 
-
 *setting up a fetch function*:
 
-```
-headers = {"User-Agent": "INFO664-class-project (educational)"}   # you can call this whatever you want, it shows up on the scraped website's logs as who you are (ie not a Google/AI bot or web browser)
-
-os.makedirs("scraped_pages", exist_ok=True)  # make a new folder to hold our scraped website HTML data. exist_ok = True means, if the directory already exists, do nothing and don't return an error
-
-def fetch_page(url, filename):  # declaring a new function, which takes a URL to be scraped, and a destination filename, as arguments
-    if os.path.exists(filename):  # check to see if file already exists, if so, don't download it from the web, load it instead
-        with open(filename, "r", encoding="utf-8") as file:
-            return file.read()  # in this case, return provides the read file data, and escapes from the function, ignoring everything below
-
-    response = requests.get(url, headers=headers) # grab the file, using our pre-defined headers as the header data
-
-    if not response.ok: # if the response reports an error
-        print(url, "failed with status code", response.status_code) # tell us why it failed
-        return None # return a "None" object, since there's nothing usable in the response, and escape from this function
-    with open(filename, "w",  encoding="utf-8") as file:
-        file.write(response.text)
-
-    sleep(10) # wait 10 seconds, since our robots.txt file asks for a 10 second Crawl-delay
-    return response.text
-```
 
 ### Homework:
 
