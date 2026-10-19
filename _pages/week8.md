@@ -15,6 +15,45 @@ permalink: /week8/
 
 ### Code Snippets for in-class demos
 
+*requesting html*:
+
+```python
+import csv
+import json
+import os # operating system library, let's us do things like making new folders
+import requests
+from time import sleep
+from bs4 import BeautifulSoup # the scraping library!
+
+
+SCRAPED_PAGES_DIRECTORY = "scraped_pages/"
+SCRAPED_PAGES_PREFIX = "page"
+scraped_pages_count = 0 # keep track of how many pages we have scraped
+
+headers = {"User-Agent": "INFO664-class-project (educational)"}   # you can call this whatever you want, it shows up on the scraped website's logs as who you are (ie not a Google/AI bot or web browser)
+
+os.makedirs("scraped_pages", exist_ok=True)  # make a new folder to hold our scraped website HTML data. exist_ok = True means, if the directory already exists, do nothing and don't return an error
+
+def fetch_page(url):  # declaring a new function, which takes a URL to be scraped, and a destination filename, as arguments
+    global scraped_pages_count  # use the scraped_pages_count from the top of the script, instead of making a new local one
+    filename = f"{SCRAPED_PAGES_DIRECTORY}{SCRAPED_PAGES_PREFIX}{scraped_pages_count}.html"
+    if os.path.exists(filename):  # check to see if file already exists, if so, don't download it from the web, load it instead
+        scraped_pages_count = scraped_pages_count + 1
+        with open(filename, "r", encoding="utf-8") as file:
+            return file.read()  # in this case, return provides the read file data, and escapes from the function, ignoring everything below
+
+    response = requests.get(url, headers=headers) # grab the file, using our pre-defined headers as the header data
+
+    if not response.ok: # if the response reports an error
+        print(url, "failed with status code", response.status_code) # tell us why it failed
+        return None # return a "None" object, since there's nothing usable in the response, and escape from this function
+    with open(filename, "w",  encoding="utf-8") as file:
+        file.write(response.text)
+        scraped_pages_count = scraped_pages_count + 1
+    sleep(10) # wait 10 seconds, since our robots.txt file asks for a 10 second Crawl-delay
+    return response.text
+```
+
 *Exporting your dictionary as json*:
 
 ```python
