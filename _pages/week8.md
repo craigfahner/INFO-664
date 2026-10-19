@@ -1,10 +1,10 @@
 ---
 layout: page
-title: Week 7
-permalink: /week7/
+title: Week 8
+permalink: /week8/
 ---
 
-## Week 7 activities
+## Week 8 activities
 
 * [NYTimes Article Search API](https://developer.nytimes.com/docs/articlesearch-product/1/overview)
 * [the Beautiful Soup Library!](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
