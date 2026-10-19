@@ -6,21 +6,10 @@ permalink: /week7-challenge-b/
 
 ## Week 7 Challenge B: Extract the data and save it as JSON
 
-[Challenge A](../week7-challenge-a/) ended with a **map**: you found the part of
-a page that holds the data, and you worked out where each fact lives. In this
-challenge, you'll use that map to **extract the data from the HTML**, collect it
-into a list of dictionaries, and **save it as a JSON file**.
-
-**Time:** about 60 minutes, on your own or in a pair.
-
-**You'll need:** your site, your saved HTML, and your map from Challenge A. If
-you want to switch sites, that's fine, but you'll need to do the Challenge A
-checks for the new one first.
-
 ### Step 1: Design your record
 
-Before writing any scraping code, decide what one record will look like. Pick
-**6 to 8 facts** from your map, and sketch the dictionary you want by hand, as
+Before writing any scraping code, decide what one record/entry will look like. Pick
+a relevant set of "facts" to record (at least 3) from your map, and sketch the dictionary you want by hand, as
 we did at the start of the Cleveland example in [Part 11](../part11/):
 
 ```python
@@ -39,7 +28,7 @@ we did at the start of the Cleveland example in [Part 11](../part11/):
 
 ### Step 2: Extract each fact from one page
 
-Using your saved page and the map from Challenge A, write code that pulls
+Using your saved page and the map from last week, write code that pulls
 **each fact into its own variable**, one at a time. Print each variable as you
 go, so you can see it work before moving on. These are the techniques from the
 lesson, and each fact will probably use one of them:
@@ -88,13 +77,13 @@ be? Is anything truncated, doubled, or strangely spaced?
 
 Wrap your code in a function, so that it can be run on any page. It should take
 the page's HTML and its address as arguments, and **return** the dictionary
-(from [Part 6](../part6/) and the end of Part 11):
+(from [Part 6](../part6/) and the end of [Part 11](../part11/
 
 ```python
 def scrape_page(html, url):
     soup = BeautifulSoup(html, "html.parser")
 
-    # ... your extraction code ...
+    # ... your exrtraction code that converts elements into a dictionary ...
 
     return {
         "title": title,
@@ -105,9 +94,9 @@ def scrape_page(html, url):
 
 Test it: it should give you the same dictionary you built in Step 3.
 
-### Step 5: Collect more than one record
+### Step 5: Collect more than one record (optional)
 
-Now build a **list of dictionaries**, with at least **3 records**. Which way you
+If your dataset allows it, make **list of dictionaries**, with at least **3 records**. Which way you
 do it depends on your site:
 
 - **Separate pages for each item** (an artwork, a course, an article). Collect
@@ -126,7 +115,7 @@ Either way, the result is a list:
 ```python
 records = []
 
-# ... your loop, appending one dictionary per page or per container ...
+# ... your loop with the extraction function developed in the previous step... appending one dictionary per page or per container ...
 
 print(len(records))
 ```
@@ -152,61 +141,3 @@ Then **check your file**:
 3. Look at one record in the loaded data, and compare it with the page one more
    time.
 
-### Step 7: Write up your data
-
-In a markdown cell, add a small **data dictionary**, with one row for each key
-in your records:
-
-| Key | What it means | Where it comes from on the page | Problems I noticed |
-| --- | --- | --- | --- |
-| `title` | The item's name | The `<h1>` | None |
-
-Then write a short paragraph (3 to 5 sentences) covering:
-
-- Which values were **messy**, and what you did about them (or what you'd do
-  with more time).
-- What would **break** your function if the site changed.
-- Whether the site had an **API or download** that would have been easier, and
-  what scraping gave you that it wouldn't have (or didn't).
-
-### What to hand in
-
-- Your notebook, with your code and its output, running from top to bottom
-- Your JSON file
-- Your data dictionary table and your paragraph
-
-**Before you share a file:** your JSON contains text copied from a site, so
-check that site's terms of use for what you may reuse. Don't commit saved HTML
-pages to the repository.
-
-### Stretch
-
-- **Clean one column.** Turn something like a year or a price into a real number
-  (with `int()`, `float()`, or a regular expression), and handle the values
-  that don't fit.
-- **Use what you built.** Filter or sort your list with `sorted()` and a
-  `lambda`, as in [Part 8](../part8/), and print the result.
-- **Save a CSV copy** with `csv.DictWriter`, as in [Part 9](../part9/), and open
-  it in a spreadsheet.
-- **Add a second site** with the same keys, and save one combined file.
-
-### When things go wrong
-
-| What you see | What to try |
-| --- | --- |
-| `AttributeError: 'NoneType' object has no attribute ...` | `find()` found nothing on that page. Print what you searched for. If the fact is sometimes missing, check for `None` first. |
-| Works on one page, fails on the next | The pages differ. Print the container's children for the failing page, and compare them with the first. This is why we look things up by label, not by position. |
-| Values run together (`copy afterAnthony van Dyck`) | Use `get_text(" ", strip=True)` with the space separator. |
-| `TypeError: Object of type ... is not JSON serializable` | Something in your dictionary is a BeautifulSoup element, not text. Use `.get_text()` to turn it into a string before you put it in the dictionary. |
-| The JSON has `é`-style codes | Add `ensure_ascii=False` to `json.dump()`. |
-| Two records are identical | Your loop might be appending the same dictionary each time. Check that the dictionary is built *inside* the loop. |
-
-### How this will be assessed
-
-| | What full marks looks like |
-| --- | --- |
-| Record design | 6 to 8 sensible keys, including `url` |
-| Extraction | Each fact comes from its own tag, label, or attribute, and missing facts don't crash it |
-| Function and loop | A function that works on every page, and a list of at least 3 records |
-| JSON file | Valid, readable, and reloads to an equal list |
-| Data dictionary and notes | Names messy values, fragile spots, and what the site's other options were |
