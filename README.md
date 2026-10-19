@@ -53,7 +53,7 @@ INFO-664/
 * [Week 5: Review and final project intro](./week5/)
 * [Week 6: Regular expressions, JSON, APIs](./week6/)
 * [Week 7: More APIs, Web Scraping part 1](./week7/)
-
+* [Week 8:  Web Scraping part 2](./week8/)
 
 * [GitHub Setup](./github-intro/)
 * [Environment Setup](./environment-setup/)
