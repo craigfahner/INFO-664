@@ -8,6 +8,8 @@ permalink: /part12/
 
 ## Part 12: Introduction to Pandas
 
+*Adapted from Prof. Filipa Calado's [introduction to pandas](https://gofilipa.github.io/664/pandas/) tutorial*
+
 ### What is pandas?
 
 So far, we've worked with tables of data using the tools that come with Python:

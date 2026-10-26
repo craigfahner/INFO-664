@@ -8,6 +8,7 @@ permalink: /week9/
 
 * [in-class notebook: web scraping + JSON saving](https://github.com/craigfahner/INFO-664/blob/main/week9/week9.ipynb)
 * [Lecture notes part 12: Pandas](https://craigfahner.github.io/INFO-664/part12/)
+* [External tutorial: Pandas basics (Melanie Walsh)](https://melaniewalsh.github.io/Intro-Cultural-Analytics/03-Data-Analysis/01-Pandas-Basics-Part1.html)
 
 ## Before you begin...
 
