@@ -35,7 +35,7 @@ Please download these datasets:
 - [Senate polling data](https://github.com/craigfahner/INFO-664/blob/main/week10/senate_average_recent.csv)
 - [House polling data](https://github.com/craigfahner/INFO-664/blob/main/week10/house_average_recent.csv)
 - [US districts geojson file](https://github.com/craigfahner/INFO-664/blob/main/week10/districts_120th.geojson)
-
+- [How the Other Half Lives: Studies Among the Tenements of New York (from Project Gutenberg)](http://github.com/craigfahner/INFO-664/blob/main/week10/riis.txt)
 
 
 ## HOMEWORK:
