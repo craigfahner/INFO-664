@@ -82,5 +82,6 @@ fig.show()
 - [wordcloud examples](https://amueller.github.io/word_cloud/auto_examples/index.html)
 
 Select one data visualization method from the above galleries that is of interest to you, or that you might be interested in integrating into your project.
+
 2. Bring the example code for the selected method into a Jupyter notebook and modify some of the parameters (around color, scale, input data, etc), documenting what you've changed in your comments
 
