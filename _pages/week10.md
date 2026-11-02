@@ -37,7 +37,7 @@ Please download these datasets:
 - [US districts geojson file](https://github.com/craigfahner/INFO-664/blob/main/week10/districts_120th.geojson)
 - [How the Other Half Lives: Studies Among the Tenements of New York (from Project Gutenberg)](http://github.com/craigfahner/INFO-664/blob/main/week10/riis.txt)
 
-** Bar chart snippet**
+**Bar chart snippet**
 ```
 # a dictionary of the names we want in the legend: {old column name: new name}
 party_names = {"dem": "Democrat", "other": "Other / undecided", "rep": "Republican"}
