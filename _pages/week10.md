@@ -14,6 +14,7 @@ permalink: /week10/
 There are a few advanced libraries for generating graphs, charts, maps and more in Python:
 
 * [plotly](https://plotly.com/python/getting-started/)
+    * [choropleth maps in plotly](https://plotly.com/python/choropleth-maps/)
 * [pydeck](https://deckgl.readthedocs.io/en/latest/)
 * [seaborn](https://seaborn.pydata.org/tutorial/introduction.html)
 * [wordcloud](https://amueller.github.io/word_cloud/)
