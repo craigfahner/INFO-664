@@ -21,7 +21,7 @@ November 12, 3:00 – 4:30 PM, PMC Room 714. Rsvp [here](bit.ly/dsl-2026-fahner)
 
 In the following two weeks, you will be developing your analysis into a presentation as a Github pages site, which will synthesize your data, code, visual artefacts, and findings into a streamlined narrative. 
 
-Have a look at the (existing projects from the course)[https://gofilipa.github.io/664-projects/] and the [documentation requirements](https://craigfahner.github.io/INFO-664/final/) for the final project. 
+Have a look at the [existing projects from the course](https://gofilipa.github.io/664-projects/) and the [documentation requirements](https://craigfahner.github.io/INFO-664/final/) for the final project. 
 
 For this week's homework, outline the "story" you want to tell through your documentation. 
 
