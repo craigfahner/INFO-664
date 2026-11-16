@@ -57,6 +57,7 @@ INFO-664/
 * [Week 9:  Data Analysis with pandas](./week9/)
 * [Week 10: Data Visualization](./week10/)
 * [Week 11: Final project "pitches"](./week11/)
+* [Week 12: GitHub pages](https://craigfahner.github.io/664-pages-template/)
 
 
 * [GitHub Setup](./github-intro/)
